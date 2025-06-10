@@ -6,9 +6,9 @@ export const Layout = () => {
   const DrawerWidth = 240;
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box>
       <AppDrawer DrawerWidth={DrawerWidth} />
-      <Box component="main">
+      <Box component="main" sx={{ ml: `${DrawerWidth}px` }}>
         <Outlet />
       </Box>
     </Box>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Dialog from "@mui/material/Dialog";
@@ -13,6 +13,7 @@ import {
   type SelectChangeEvent,
 } from "@mui/material";
 import { Select, MenuItem } from "@mui/material";
+import { useUser } from "../../../../provider/UserProvider";
 
 type EditDialogProps = {
   open: boolean;
@@ -20,13 +21,25 @@ type EditDialogProps = {
 };
 
 export const EditDialog = ({ open, handleClose }: EditDialogProps) => {
-  const userData = JSON.parse(localStorage.getItem("Profile") ?? "{}");
+  const { userData, updateUserData, updateUserImage } = useUser();
 
-  const [gender, setGender] = useState<string>(userData.gender ?? "Kadın");
-  const [image, setImage] = useState<string | null>(userData.image ?? null);
+  const [gender, setGender] = useState<"kadın" | "erkek" | "diğer">(
+    userData.gender ?? "kadın"
+  );
+  const [image, setImage] = useState<string | undefined>(
+    userData.image ?? undefined
+  );
+
+  // Dialog açıldığında state'leri güncelle
+  useEffect(() => {
+    if (open) {
+      setGender(userData.gender ?? "kadın");
+      setImage(userData.image ?? undefined);
+    }
+  }, [open, userData]);
 
   const handleGenderChange = (event: SelectChangeEvent) => {
-    setGender(event.target.value as string);
+    setGender(event.target.value as "kadın" | "erkek" | "diğer");
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -36,10 +49,25 @@ export const EditDialog = ({ open, handleClose }: EditDialogProps) => {
       reader.onloadend = () => {
         const base64 = reader.result as string;
         setImage(base64);
-        localStorage.setItem("profileImage", base64);
+        updateUserImage(base64);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+
+    const name = formData.get("name")?.toString() ?? "";
+    const age = formData.get("age")?.toString() ?? "";
+    const kg = formData.get("kg")?.toString() ?? "";
+    const height = formData.get("height")?.toString() ?? "";
+
+    const newUserData = { name, age, kg, height, gender, image };
+
+    updateUserData(newUserData);
+    handleClose();
   };
 
   return (
@@ -49,28 +77,7 @@ export const EditDialog = ({ open, handleClose }: EditDialogProps) => {
       slotProps={{
         paper: {
           component: "form",
-          onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
-
-            const name = formJson.name;
-            const age = formJson.age;
-            const kg = formJson.kg;
-            const height = formJson.height;
-
-            const userProfile = {
-              name,
-              age,
-              kg,
-              height,
-              gender,
-              image,
-            };
-
-            localStorage.setItem("Profile", JSON.stringify(userProfile));
-            handleClose();
-          },
+          onSubmit: handleSubmit,
         },
       }}
     >
@@ -108,7 +115,6 @@ export const EditDialog = ({ open, handleClose }: EditDialogProps) => {
           />
           <Stack direction="row" spacing={5}>
             <TextField
-              autoFocus
               required
               margin="dense"
               id="age"
@@ -149,14 +155,13 @@ export const EditDialog = ({ open, handleClose }: EditDialogProps) => {
               variant="standard"
               onChange={handleGenderChange}
             >
-              <MenuItem value={"Kadın"}>kadın</MenuItem>
-              <MenuItem value={"Erkek"}>erkek</MenuItem>
-              <MenuItem value={"Diğer"}>diğer</MenuItem>
+              <MenuItem value={"kadın"}>kadın</MenuItem>
+              <MenuItem value={"erkek"}>erkek</MenuItem>
+              <MenuItem value={"diğer"}>diğer</MenuItem>
             </Select>
           </Stack>
           <Stack direction="row" spacing={5}>
             <TextField
-              autoFocus
               required
               margin="dense"
               id="kg"
@@ -190,7 +195,6 @@ export const EditDialog = ({ open, handleClose }: EditDialogProps) => {
               }}
             />
             <TextField
-              autoFocus
               required
               margin="dense"
               id="height"
@@ -202,7 +206,7 @@ export const EditDialog = ({ open, handleClose }: EditDialogProps) => {
               defaultValue={userData.height}
               InputProps={{
                 endAdornment: (
-                  <InputAdornment position="start">cm</InputAdornment>
+                  <InputAdornment position="end">cm</InputAdornment>
                 ),
               }}
               inputProps={{
@@ -228,7 +232,7 @@ export const EditDialog = ({ open, handleClose }: EditDialogProps) => {
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>İptal</Button>
-        <Button type="submit">Kaydet kııız</Button>
+        <Button type="submit">Kaydet</Button>
       </DialogActions>
     </Dialog>
   );

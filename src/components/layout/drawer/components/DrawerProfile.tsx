@@ -6,20 +6,10 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-
-type UserData = {
-  name: string;
-  image?: string | null;
-  gender?: string;
-  age?: number | string;
-  kg?: number | string;
-  height?: number | string;
-};
+import { useUser } from "../../../../provider/UserProvider";
 
 export const DrawerProfile = () => {
-  const userData: UserData = JSON.parse(
-    localStorage.getItem("Profile") ?? "{}"
-  );
+  const { userData } = useUser();
 
   return (
     <>

@@ -1,3 +1,5 @@
+import { Hero } from "./components/hero/Hero";
+
 export const WaterTracking = () => {
-  return <div>WaterTracking</div>;
+  return <Hero />;
 };
