@@ -52,7 +52,7 @@ const PimpishPeachyTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Comic Neue", "Caveat", cursive',
+    fontFamily: '"Quicksand", "Caveat", cursive',
   },
   components: {
     MuiCssBaseline: {
@@ -135,7 +135,7 @@ const PimpishPeachyDarkTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: '"Comic Neue", "Caveat", cursive',
+    fontFamily: '"Quicksand", "Caveat", cursive',
   },
   components: {
     MuiCssBaseline: {
