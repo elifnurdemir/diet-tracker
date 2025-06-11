@@ -16,6 +16,7 @@ interface UserContextValue {
   addWaterEntry: (amount: number) => void;
   todayWaterEntries: WaterEntry[]; // Bugünün tüm su içme kayıtları
   todayTotalWaterAmount: number; // Bugünkü toplam su miktarı
+  waterHeatmapData: { date: string; value: number }[];
 }
 
 const UserContext = createContext<UserContextValue | null>(null);
@@ -73,6 +74,20 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }, []);
 
+  // Günlük toplam su miktarlarını tarih bazlı toplayıp heatmap'e uygun formatta döner
+  const waterHeatmapData = useMemo(() => {
+    if (!userData.waterEntries) return [];
+
+    const summary: Record<string, number> = {};
+
+    for (const entry of userData.waterEntries) {
+      const dateOnly = new Date(entry.date).toISOString().split("T")[0];
+      summary[dateOnly] = (summary[dateOnly] || 0) + entry.amount;
+    }
+
+    return Object.entries(summary).map(([date, value]) => ({ date, value }));
+  }, [userData.waterEntries]);
+
   const bmi = useMemo(() => {
     if (
       userData.kg !== undefined &&
@@ -118,6 +133,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         addWaterEntry,
         todayWaterEntries,
         todayTotalWaterAmount,
+        waterHeatmapData,
       }}
     >
       {children}

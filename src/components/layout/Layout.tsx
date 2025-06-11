@@ -8,7 +8,7 @@ export const Layout = () => {
   return (
     <Box>
       <AppDrawer DrawerWidth={DrawerWidth} />
-      <Box component="main" sx={{ ml: `${DrawerWidth}px` }}>
+      <Box component="main" sx={{ ml: `${DrawerWidth}px`, minHeight: "100vh" }}>
         <Outlet />
       </Box>
     </Box>
