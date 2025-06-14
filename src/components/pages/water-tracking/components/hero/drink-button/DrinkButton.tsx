@@ -34,6 +34,9 @@ export const DrinkButton = () => {
           display: "flex",
           alignItems: "center",
           gap: 2,
+          backgroundColor: "background.paper",
+          color: "text.primary",
+          textTransform: "capitalize",
         }}
       >
         <LocalDrinkIcon sx={{ fontSize: 30 }} />

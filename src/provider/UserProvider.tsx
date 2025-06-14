@@ -21,16 +21,6 @@ interface UserContextValue {
 
 const UserContext = createContext<UserContextValue | null>(null);
 
-function isSameDay(dateStr1: string, dateStr2: string) {
-  const d1 = new Date(dateStr1);
-  const d2 = new Date(dateStr2);
-  return (
-    d1.getFullYear() === d2.getFullYear() &&
-    d1.getMonth() === d2.getMonth() &&
-    d1.getDate() === d2.getDate()
-  );
-}
-
 export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [userData, setUserData] = useState<UserData>(() => {
     return JSON.parse(localStorage.getItem("Profile") ?? "{}");
@@ -110,11 +100,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     return null;
   }, [userData.kg, userData.height]);
 
+  const todayDateStr = new Date().toISOString().split("T")[0];
+
   const todayWaterEntries = useMemo(() => {
     if (!userData.waterEntries) return [];
-    const todayStr = new Date().toISOString();
     return userData.waterEntries.filter((entry) =>
-      isSameDay(entry.date, todayStr)
+      entry.date.startsWith(todayDateStr)
     );
   }, [userData.waterEntries]);
 

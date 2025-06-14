@@ -1,8 +1,19 @@
 import { useUser } from "../../../../../../provider/UserProvider";
-import { Box, Typography } from "@mui/material";
+import { Box, CardContent, Typography } from "@mui/material";
+
+// yardimci fonksiyon: hedef miktara göre uygun aralık (step) belirler
+const getStepForScale = (max: number) => {
+  if (max <= 500) return 100;
+  if (max <= 1000) return 200;
+  if (max <= 2000) return 250;
+  if (max <= 3000) return 500;
+  return 500; // maksimum step'i 500 tut
+};
+
 export const DailyGoal = () => {
   const { dailyIdealWater, todayTotalWaterAmount } = useUser();
 
+  // yüzde hesapla
   const percentage =
     dailyIdealWater && dailyIdealWater > 0
       ? (todayTotalWaterAmount / dailyIdealWater) * 100
@@ -10,16 +21,27 @@ export const DailyGoal = () => {
 
   const topPercent = 100 - percentage;
 
-  // Create marks for the scale inside the container
+  // iç ölçek (ölçüm çizgileri) oluştur
   const marks = [];
   if (dailyIdealWater && dailyIdealWater > 0) {
-    for (let i = 0; i <= 4; i++) {
-      const value = (dailyIdealWater / 4) * i;
-      const position = (i / 4) * 100;
+    const step = getStepForScale(dailyIdealWater);
+
+    for (let value = 0; value <= dailyIdealWater; value += step) {
+      const position = (value / dailyIdealWater) * 100;
       marks.push({
-        value: value,
-        position: `${100 - position}%`, // Invert for bottom-to-top
-        label: value === 0 ? "0ml" : `${Math.round(value)}ml`,
+        value,
+        position: `${100 - position}%`,
+        label: `${value}ml`,
+      });
+    }
+
+    // hedefin tam değeri eksikse son çizgiyi ekle
+    const lastMark = marks[marks.length - 1];
+    if (lastMark?.value < dailyIdealWater) {
+      marks.push({
+        value: dailyIdealWater,
+        position: `0%`,
+        label: `${Math.round(dailyIdealWater)}ml`,
       });
     }
   }
@@ -30,64 +52,50 @@ export const DailyGoal = () => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        justifyContent: "center",
         gap: "24px",
         padding: "24px",
-        fontFamily:
-          '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
       }}
     >
-      {/* Header */}
+      {/* başlık ve toplam miktar */}
       <div style={{ textAlign: "center" }}>
         <h2
           style={{
             fontSize: "28px",
             fontWeight: "bold",
-            color: "#2c5aa0",
-            margin: "0 0 8px 0",
+            color: "text.primary",
+            margin: "0 0 8px",
           }}
         >
-          Günlük Su Hedefi
+          Günlük Su İçme Hedefiniz
         </h2>
         <p
           style={{
-            fontSize: "16px",
-            color: "#666",
-            margin: "0 0 4px 0",
-          }}
-        >
-          {Math.round(todayTotalWaterAmount)}ml /{" "}
-          {Math.round(dailyIdealWater ?? 0)}
-          ml
-        </p>
-        <p
-          style={{
-            fontSize: "14px",
-            color: "#33cfff",
+            fontSize: "body1",
+            color: "text.primary",
             fontWeight: "bold",
-            margin: "0",
+            margin: "4px 0 0",
           }}
         >
           %{Math.round(percentage)} tamamlandı
-        </p>
+        </p>{" "}
       </div>
 
-      {/* Water Container with Internal Scale */}
+      {/* su kabı görseli */}
       <div
         style={{
-          width: "360px",
+          width: "320px",
           height: "320px",
-          border: "6px solid #2c5aa0",
+          border: "6px solid #0F4C75",
           borderTop: "none",
-          borderBottomRightRadius: "30px",
-          borderBottomLeftRadius: "30px",
+          borderBottomRightRadius: "70px",
+          borderBottomLeftRadius: "70px",
           position: "relative",
           overflow: "hidden",
-          backgroundColor: "#f8f9fa",
+          backgroundColor: "transparent",
           boxShadow: "0 8px 25px rgba(44, 90, 160, 0.15)",
         }}
       >
-        {/* Water Level with Wave Animation */}
+        {/* animasyonlu su seviyesi */}
         <div
           style={{
             width: "600px",
@@ -100,12 +108,10 @@ export const DailyGoal = () => {
             transform: "translateX(-50%)",
             animation: "waves 8000ms linear infinite",
             transition: "top 2.5s ease-in-out",
-            opacity: 0.85,
+            opacity: 0.95,
             zIndex: 1,
           }}
         />
-
-        {/* Secondary Wave for More Realistic Effect */}
         <div
           style={{
             width: "600px",
@@ -122,6 +128,7 @@ export const DailyGoal = () => {
           }}
         />
 
+        {/* iç ölçüm çizgileri */}
         <Box
           sx={{
             display: "flex",
@@ -131,67 +138,75 @@ export const DailyGoal = () => {
             position: "absolute",
             width: "100%",
             height: "100%",
-            zIndex: "10",
+            zIndex: 10,
           }}
         >
-          {marks.map((mark) => (
-            <Box
-              sx={{
-                backgroundColor: "#2c5aa0",
-                borderTopLeftRadius: "20px",
-                borderBottomLeftRadius: "20px",
-                px: 1,
-              }}
-            >
-              <Typography variant={"body2"}>{mark.label}</Typography>
-            </Box>
-          ))}
+          {marks.map((mark, index) => {
+            return (
+              <Box
+                key={mark.value}
+                sx={{
+                  backgroundColor: "#0F4C75",
+                  borderTopLeftRadius: "20px",
+                  borderBottomLeftRadius: "20px",
+                  px: 1,
+                  top: mark.position,
+                  visibility: index === 0 ? "hidden" : "visible",
+                }}
+              >
+                <Typography
+                  variant="body2"
+                  sx={{ color: "white", fontSize: "12px" }}
+                >
+                  {mark.label}
+                </Typography>
+              </Box>
+            );
+          })}
         </Box>
 
-        {/* Current Level Indicator */}
+        {/* mevcut seviye çizgisi */}
         {dailyIdealWater && dailyIdealWater > 0 && (
           <div
             style={{
-              position: "absolute",
-              left: "8px",
-              right: "8px",
+              position: "relative",
+
               top: `${topPercent}%`,
+              width: "100%",
               display: "flex",
               alignItems: "center",
-              zIndex: 3,
-              transform: "translateY(-1px)",
+              zIndex: 100,
             }}
           >
-            {/* Current Level Line */}
             <div
               style={{
-                flex: 1,
+                width: "50%",
                 height: "3px",
-                backgroundColor: "#ff6b35",
-                borderRadius: "2px",
-                boxShadow: "0 0 8px rgba(255, 107, 53, 0.5)",
-              }}
-            />
-            {/* Current Amount Badge */}
-            <div
-              style={{
+                right: "0px",
                 position: "absolute",
-                left: "-40px",
-                backgroundColor: "#ff6b35",
-                color: "white",
-                padding: "2px 6px",
-                borderRadius: "12px",
-                fontSize: "10px",
-                fontWeight: "bold",
-                boxShadow: "0 2px 8px rgba(255, 107, 53, 0.3)",
+                backgroundColor: "#0F4C75",
+                borderRadius: "2px",
+                display: "flex",
+                alignItems: "center",
               }}
             >
-              {Math.round(todayTotalWaterAmount)}ml
+              <div
+                style={{
+                  backgroundColor: "#0F4C75",
+                  color: "white",
+                  padding: "2px 6px",
+                  borderRadius: "12px",
+                  fontSize: "10px",
+                  fontWeight: "bold",
+                }}
+              >
+                {Math.round(todayTotalWaterAmount)}ml
+              </div>
             </div>
           </div>
         )}
 
-        {/* Gradient Overlay for Depth Effect */}
+        {/* görsel derinlik için gradient overlay */}
         <div
           style={{
             position: "absolute",
@@ -206,66 +221,47 @@ export const DailyGoal = () => {
           }}
         />
 
+        {/* wave animasyonları */}
         <style>{`
           @keyframes waves {
-            0% {
-              transform: translateX(-50%) rotate(0deg);
-            }
-            100% {
-              transform: translateX(-50%) rotate(360deg);
-            }
+            0% { transform: translateX(-50%) rotate(0deg); }
+            100% { transform: translateX(-50%) rotate(360deg); }
           }
           @keyframes waves-reverse {
-            0% {
-              transform: translateX(-50%) rotate(360deg);
-            }
-            100% {
-              transform: translateX(-50%) rotate(0deg);
-            }
+            0% { transform: translateX(-50%) rotate(360deg); }
+            100% { transform: translateX(-50%) rotate(0deg); }
           }
         `}</style>
       </div>
 
-      {/* Progress Summary */}
-      <div
-        style={{
-          backgroundColor: "#f8f9fa",
-          padding: "16px",
-          borderRadius: "12px",
-          border: "1px solid #e9ecef",
-          minWidth: "200px",
+      {/* kalan miktar kutusu */}
+
+      <Box
+        sx={{
+          backgroundColor: "background.paper",
+          borderRadius: 3,
+          minWidth: 220,
           textAlign: "center",
+          boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.04)",
         }}
       >
-        <p
-          style={{
-            fontSize: "14px",
-            color: "#666",
-            margin: "0 0 8px 0",
-          }}
-        >
-          Kalan miktar
-        </p>
-        <h3
-          style={{
-            fontSize: "24px",
-            color: "#2c5aa0",
-            fontWeight: "bold",
-            margin: "0 0 4px 0",
-          }}
-        >
-          {Math.max(0, (dailyIdealWater ?? 0) - todayTotalWaterAmount)}ml
-        </h3>
-        <p
-          style={{
-            fontSize: "12px",
-            color: "#666",
-            margin: "0",
-          }}
-        >
-          {percentage >= 100 ? "Hedef tamamlandı! 🎉" : "hedefe ulaşmak için"}
-        </p>
-      </div>
+        <CardContent>
+          <Typography variant="body2" color="text.primary" gutterBottom>
+            Kalan miktar
+          </Typography>
+
+          <Typography
+            variant="h4"
+            sx={{ color: "white", fontWeight: "bold", mb: 1 }}
+          >
+            {Math.max(0, (dailyIdealWater ?? 0) - todayTotalWaterAmount)}ml
+          </Typography>
+
+          <Typography variant="caption" color="text.primary">
+            {percentage >= 100 ? "Hedef tamamlandı! 🎉" : "hedefe ulaşmak için"}
+          </Typography>
+        </CardContent>
+      </Box>
     </div>
   );
 };

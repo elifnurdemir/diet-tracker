@@ -2,14 +2,14 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "./components/layout/Layout";
 import { Home } from "./components/pages/home/Home";
 import { CssBaseline } from "@mui/material";
-import { ColorModeContextProvider } from "./provider/ColorModeProvider";
 import { UserProvider } from "./provider/UserProvider";
 import { SnackbarProvider } from "./provider/SnackbarProvider";
 
 import { WaterTracking } from "./components/pages/water-tracking/WaterTracking";
+import { CustomThemeProvider } from "./ThemeContext";
 function App() {
   return (
-    <ColorModeContextProvider>
+    <CustomThemeProvider>
       <CssBaseline />
       <UserProvider>
         <SnackbarProvider>
@@ -23,7 +23,7 @@ function App() {
           </BrowserRouter>
         </SnackbarProvider>
       </UserProvider>
-    </ColorModeContextProvider>
+    </CustomThemeProvider>
   );
 }
 

@@ -2,27 +2,21 @@ import React, { type JSX } from "react";
 import { Box, Tooltip, Typography } from "@mui/material";
 
 interface ActivityData {
-  date: string; // ISO tarih: "2025-06-12"
-  value: number; // o günkü ölçülen değer (örneğin ml, dakika, puan)
+  date: string;
+  value: number;
 }
 
 interface ActivityHeatmapProps {
   data: ActivityData[];
-  goal: number; // günlük hedef (örn. 2000ml, 30dk, 5 puan)
-  title?: string; // üst başlık (örn. "Su Takibi", "Spor Takibi")
-  unit?: string; // değer birimi (örn. ml, dk, kalori)
-  colorScale?: string[]; // isteğe bağlı renk dizisi (açık -> koyu)
+  goal: number;
+  title?: string;
+  unit?: string;
+  colorScale?: string[];
 }
 
-const defaultColorScale = [
-  "#e3f2fd",
-  "#bbdefb",
-  "#90caf9",
-  "#42a5f5",
-  "#1e88e5",
-];
+const defaultColorScale = ["#bbdefb", "#42a5f5", "#1e88e5"];
 
-const daysOfWeek = ["Pz", "Sa", "Ça", "Pe", "Cu", "Ct", "Pa"];
+const dayNames = ["Pz", "Pt", "Sa", "Ça", "Pe", "Cu", "Ct"]; // doğru sıralı
 
 export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
   data,
@@ -33,7 +27,7 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
 }) => {
   const today = new Date();
   const startDate = new Date(today);
-  startDate.setDate(startDate.getDate() - 41); // son 6 hafta
+  startDate.setDate(startDate.getDate() - 41);
 
   const dateMap = new Map<string, number>();
   data.forEach((entry) => {
@@ -41,10 +35,14 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
   });
 
   const getColorByPercentage = (percentage: number): string => {
-    const steps = colorScale.length;
-    const index = Math.min(steps - 1, Math.floor(percentage * steps));
-    return colorScale[index];
+    if (percentage === 0) return "transparent";
+    if (percentage < 0.33) return colorScale[0];
+    if (percentage < 0.66) return colorScale[1];
+    return colorScale[2];
   };
+
+  // 🧠 startDate'in gününü al, 0=pazar, 1=pazartesi...
+  const startDayIndex = startDate.getDay();
 
   const cells: JSX.Element[] = [];
   for (let i = 0; i < 42; i++) {
@@ -94,19 +92,24 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
         {title}
       </Typography>
 
-      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="2px">
-        {/* Haftanın günleri */}
-        {daysOfWeek.map((day, index) => (
-          <Typography
-            key={`day-${index}`}
-            variant="caption"
-            sx={{ textAlign: "center", fontWeight: "medium" }}
-          >
-            {day}
-          </Typography>
-        ))}
+      {/* Gün isimlerini başlangıç gününe göre hizala */}
+      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="2px" mb={1}>
+        {Array.from({ length: 7 }).map((_, i) => {
+          const index = (startDayIndex + i) % 7;
+          return (
+            <Typography
+              key={`day-${i}`}
+              variant="caption"
+              sx={{ textAlign: "center", fontWeight: "medium" }}
+            >
+              {dayNames[index]}
+            </Typography>
+          );
+        })}
+      </Box>
 
-        {/* Takvim hücreleri */}
+      {/* Hücreleri çiz */}
+      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="2px">
         {cells}
       </Box>
     </Box>

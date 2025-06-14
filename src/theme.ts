@@ -1,200 +1,184 @@
 import type { ButtonProps } from "@mui/material";
 import { createTheme, responsiveFontSizes } from "@mui/material/styles";
 
-// Özel renk paleti tipi genişletme
-declare module "@mui/material/styles" {
-  interface Palette {
-    customBackground: {
-      box: string;
-    };
-    highlightedRow: {
-      main: string;
-    };
-  }
+const font = '"Cormorant Garamond", "Georgia", serif';
 
-  interface PaletteOptions {
-    customBackground?: {
-      box: string;
-    };
-    highlightedRow?: {
-      main: string;
-    };
-  }
-}
-
-const PimpishPeachyTheme = createTheme({
-  palette: {
-    mode: "light",
-    primary: {
-      main: "#f48fb1", // pempiş
-      light: "#ffc1e3", // yumuşacık pembe
-      dark: "#bf5f82",
-      contrastText: "#ffffff",
-    },
-    secondary: {
-      main: "#ffd180", // şeftaliş turuncu
-      light: "#ffe8b2",
-      dark: "#caa94d",
-    },
-    background: {
-      default: "#fff0f5", // lavanta pembesi
-      paper: "#ffffff",
-    },
-    text: {
-      primary: "#4a2c2a", // tatlı koyu kahve
-      secondary: "#7b5e57",
-    },
-    customBackground: {
-      box: "#fff3f8", // açık pembe kutucuklar
-    },
-    highlightedRow: {
-      main: "#ffe4e1", // pastel pembe vurgulu satır
-    },
-  },
-  typography: {
-    fontFamily: '"Quicksand", "Caveat", cursive',
-  },
-  components: {
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          backgroundColor: "#fff0f5",
-          color: "#4a2c2a",
-        },
-        "main.MuiBox-root": {
-          backgroundColor: "#fff3f8",
-        },
-      },
-    },
-    MuiTypography: {
-      styleOverrides: {
-        root: {
-          color: "#4a2c2a",
-        },
-      },
-    },
-    MuiAppBar: {
-      defaultProps: {
-        color: "default",
-        elevation: 0,
-      },
-      styleOverrides: {
-        root: {
-          backgroundColor: "#ffc1e3",
-          color: "#4a2c2a",
-          height: "64px",
-        },
-      },
-    },
-    MuiButton: {
-      styleOverrides: {
-        root: ({ ownerState }: { ownerState: ButtonProps }) => ({
-          borderRadius: "30px",
-          textTransform: "none",
-          fontWeight: "bold",
-          ...(ownerState.variant === "contained" &&
-            ownerState.color === "primary" && {
-              backgroundColor: "#f48fb1",
-              color: "#ffffff",
-              "&:hover": {
-                backgroundColor: "#ec407a",
-              },
-            }),
-        }),
-      },
-    },
-  },
-});
-const PimpishPeachyDarkTheme = createTheme({
+const RoyalVelvetDarkTheme = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#f48fb1", // şeker pembe
-      light: "#ffbcd6",
-      dark: "#ad5d7c",
-      contrastText: "#1e1e1e",
-    },
-    secondary: {
-      main: "#ffb74d", // yumuşak şeftali turuncusu
-      light: "#ffe082",
-      dark: "#c88719",
+      main: "#5B2C6F",
+      light: "#7D3C98",
+      dark: "#3A1A53",
+      contrastText: "#E6D0F0",
     },
     background: {
-      default: "#1e1e2f", // gece pembesi
-      paper: "#2c2c3a", // kartlar için
+      default: "#2E1A3E",
+      paper: "#3B2645",
     },
     text: {
-      primary: "#ffe4f2", // pastel açık pembe
-      secondary: "#f8bbd0", // daha açık detay yazılar
-    },
-    customBackground: {
-      box: "#2c2233", // morumsu tatlı kutucuk
-    },
-    highlightedRow: {
-      main: "#3d2c3e", // koyu lavanta vurgulu
+      primary: "#E6D0F0",
+      secondary: "#B497C7",
     },
   },
   typography: {
-    fontFamily: '"Quicksand", "Caveat", cursive',
+    fontFamily: font,
+    h1: { fontWeight: 700, fontSize: "2.5rem" },
+    h2: { fontWeight: 600, fontSize: "1.8rem" },
+    body1: { fontWeight: 400, fontSize: "1.1rem" },
   },
   components: {
     MuiCssBaseline: {
       styleOverrides: {
         body: {
-          backgroundColor: "#1e1e2f",
-          color: "#ffe4f2",
-        },
-        "main.MuiBox-root": {
-          backgroundColor: "#2c2233",
+          backgroundColor: "#2E1A3E",
+          color: "#E6D0F0",
+          fontSmooth: "antialiased",
         },
       },
     },
     MuiAppBar: {
-      defaultProps: {
-        color: "default",
-        elevation: 0,
-      },
       styleOverrides: {
         root: {
-          backgroundColor: "#2c2c3a",
-          color: "#ffe4f2",
+          backgroundColor: "#3B2645",
+          color: "#E6D0F0",
+          borderBottom: "1px solid #59306E",
+          boxShadow: "none",
           height: "64px",
-        },
-      },
-    },
-    MuiTypography: {
-      styleOverrides: {
-        root: {
-          color: "#ffe4f2",
         },
       },
     },
     MuiButton: {
       styleOverrides: {
         root: ({ ownerState }: { ownerState: ButtonProps }) => ({
-          borderRadius: "30px",
+          borderRadius: "12px",
+          padding: "8px 20px",
+          fontWeight: 600,
           textTransform: "none",
-          fontWeight: "bold",
+          transition: "background-color 0.3s ease",
           ...(ownerState.variant === "contained" &&
             ownerState.color === "primary" && {
-              backgroundColor: "#f48fb1",
-              color: "#1e1e1e",
+              backgroundColor: "#5B2C6F",
+              color: "#E6D0F0",
               "&:hover": {
-                backgroundColor: "#ec407a",
+                backgroundColor: "#4A2164",
+              },
+            }),
+          ...(ownerState.variant === "outlined" &&
+            ownerState.color === "primary" && {
+              borderColor: "#7D3C98",
+              color: "#B497C7",
+              "&:hover": {
+                backgroundColor: "#3A1A53",
+                borderColor: "#7D3C98",
+                color: "#E6D0F0",
               },
             }),
         }),
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: "16px",
+          backgroundColor: "#3B2645",
+          boxShadow: "0 6px 12px rgba(91,44,111,0.6)",
+        },
+      },
+    },
   },
 });
 
-const PimpishPeachyThemeWithResponsiveFonts =
-  responsiveFontSizes(PimpishPeachyTheme);
-const PimpishPeachyDarkThemeWithResponsiveFonts = responsiveFontSizes(
-  PimpishPeachyDarkTheme
+const RoyalVelvetLightTheme = createTheme({
+  palette: {
+    mode: "light",
+    primary: {
+      main: "#7D3C98",
+      light: "#B388D8",
+      dark: "#5B2C6F",
+      contrastText: "#3B2645",
+    },
+    background: {
+      default: "#F4F0FA",
+      paper: "#FFFFFF",
+    },
+    text: {
+      primary: "#3B2645",
+      secondary: "#7D6A9B",
+    },
+  },
+  typography: {
+    fontFamily: font,
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: "#F4F0FA",
+          color: "#3B2645",
+          fontSmooth: "antialiased",
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#FFFFFF",
+          color: "#5B2C6F",
+          borderBottom: "1px solid #B388D8",
+          boxShadow: "none",
+          height: "64px",
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: ({ ownerState }: { ownerState: ButtonProps }) => ({
+          borderRadius: "12px",
+          padding: "8px 20px",
+          fontWeight: 600,
+          textTransform: "none",
+          transition: "background-color 0.3s ease",
+          ...(ownerState.variant === "contained" &&
+            ownerState.color === "primary" && {
+              backgroundColor: "#7D3C98",
+              color: "#FFFFFF",
+              "&:hover": {
+                backgroundColor: "#5B2C6F",
+              },
+            }),
+          ...(ownerState.variant === "outlined" &&
+            ownerState.color === "primary" && {
+              borderColor: "#B388D8",
+              color: "#7D3C98",
+              "&:hover": {
+                backgroundColor: "#F4F0FA",
+                borderColor: "#5B2C6F",
+                color: "#5B2C6F",
+              },
+            }),
+        }),
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          borderRadius: "16px",
+          backgroundColor: "#FFFFFF",
+          boxShadow: "0 4px 8px rgba(125, 60, 152, 0.2)",
+        },
+      },
+    },
+  },
+});
+
+const RoyalVelvetDarkThemeWithResponsiveFonts =
+  responsiveFontSizes(RoyalVelvetDarkTheme);
+const RoyalVelvetLightThemeWithResponsiveFonts = responsiveFontSizes(
+  RoyalVelvetLightTheme
 );
+
 export {
-  PimpishPeachyThemeWithResponsiveFonts,
-  PimpishPeachyDarkThemeWithResponsiveFonts,
+  RoyalVelvetDarkThemeWithResponsiveFonts,
+  RoyalVelvetLightThemeWithResponsiveFonts,
 };
