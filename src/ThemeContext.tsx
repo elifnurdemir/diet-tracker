@@ -42,29 +42,29 @@ const BlueDarkTheme = responsiveFontSizes(
   })
 );
 
-const GreenLightTheme = responsiveFontSizes(
+const RedLightTheme = responsiveFontSizes(
   createTheme({
     palette: {
       mode: "light",
-      primary: { main: "#4caf50" },
-      background: { default: "#e8f5e9" },
-      text: { primary: "#1b5e20" },
+      primary: { main: "#0C005A" },
+      background: { default: "#E0E0E0" },
+      text: { primary: "#FF4D00" },
     },
   })
 );
 
-const GreenDarkTheme = responsiveFontSizes(
+const RedDarkTheme = responsiveFontSizes(
   createTheme({
     palette: {
       mode: "dark",
-      primary: { main: "#81c784" },
-      background: { default: "#0f1b12" },
-      text: { primary: "#e8f5e9" },
+      primary: { main: "#0C005A" },
+      background: { default: "#222831" },
+      text: { primary: "#FF5200" },
     },
   })
 );
 
-type ThemeName = "royalVelvet" | "blue" | "green";
+type ThemeName = "royalVelvet" | "blue" | "red";
 type Mode = "light" | "dark";
 
 type ThemeContextType = {
@@ -96,8 +96,7 @@ export const CustomThemeProvider: React.FC<{ children: React.ReactNode }> = ({
         : RoyalVelvetDarkThemeWithResponsiveFonts;
     if (name === "blue")
       return mode === "light" ? BlueLightTheme : BlueDarkTheme;
-    if (name === "green")
-      return mode === "light" ? GreenLightTheme : GreenDarkTheme;
+    if (name === "red") return mode === "light" ? RedLightTheme : RedDarkTheme;
     return RoyalVelvetLightThemeWithResponsiveFonts;
   };
 
