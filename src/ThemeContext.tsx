@@ -59,7 +59,7 @@ const RedDarkTheme = responsiveFontSizes(
       mode: "dark",
       primary: { main: "#0C005A" },
       background: { default: "#222831" },
-      text: { primary: "#FF5200" },
+      text: { primary: "#FF5200", secondary: "#001219" },
     },
   })
 );

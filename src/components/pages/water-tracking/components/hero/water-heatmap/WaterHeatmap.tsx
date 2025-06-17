@@ -8,7 +8,7 @@ export const WaterHeatmap = () => {
   console.log(waterHeatmapData);
 
   return (
-    <Container sx={{ mt: 4 }}>
+    <Container sx={{ mt: 10 }}>
       <Stack spacing={4}>
         <ActivityHeatmap
           data={waterHeatmapData}

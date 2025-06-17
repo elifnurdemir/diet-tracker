@@ -23,8 +23,8 @@ export const Hero = () => {
         <DailyGoal />
       </Box>
       <Box>
-        <DrinkButton />
         <WaterHeatmap />
+        <DrinkButton />
       </Box>
     </Stack>
   );

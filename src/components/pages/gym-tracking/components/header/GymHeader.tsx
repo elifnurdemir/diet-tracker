@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 import { useThemeContext } from "../../../../../ThemeContext";
 import { ExerciseSelectorButton } from "../ExerciseSelectorButton";
-import { ExerciseForm } from "../ExerciseForm";
+import MotivationCard from "../MotivationCard";
 
 export const GymHeader = () => {
   const { setTheme } = useThemeContext();
@@ -12,15 +12,10 @@ export const GymHeader = () => {
     setTheme("red");
   }, [setTheme]);
 
-  const handleSave = (type: string, details: string) => {
-    console.log("Egzersiz Kaydedildi:", { tür: type, detay: details });
-    setIsFormOpen(false);
-  };
-
   return (
     <Box>
+      <MotivationCard />
       <ExerciseSelectorButton onClick={() => setIsFormOpen(!isFormOpen)} />
-      {isFormOpen && <ExerciseForm onSave={handleSave} />}
     </Box>
   );
 };
