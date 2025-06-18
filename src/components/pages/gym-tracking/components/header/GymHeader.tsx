@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { Box } from "@mui/material";
 import { useThemeContext } from "../../../../../ThemeContext";
-import { ExerciseSelectorButton } from "../ExerciseSelectorButton";
+import { ExerciseButton } from "../ExerciseButton";
 import MotivationCard from "../MotivationCard";
+import { ExerciseTotal } from "../ExerciseTotal";
 
 export const GymHeader = () => {
   const { setTheme } = useThemeContext();
-  const [isFormOpen, setIsFormOpen] = useState(false);
 
   useEffect(() => {
     setTheme("red");
@@ -15,7 +15,8 @@ export const GymHeader = () => {
   return (
     <Box>
       <MotivationCard />
-      <ExerciseSelectorButton onClick={() => setIsFormOpen(!isFormOpen)} />
+      <ExerciseButton />
+      <ExerciseTotal />
     </Box>
   );
 };

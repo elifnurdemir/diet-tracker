@@ -1,7 +1,6 @@
 // MotivasyonCard.tsx
 import { useEffect, useState } from "react";
 import { Card, Typography, Box, IconButton } from "@mui/material";
-import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import RefreshIcon from "@mui/icons-material/Refresh";
 
 const quotes = [
@@ -46,7 +45,7 @@ export default function MotivationCard() {
           onClick={getRandomQuote}
           aria-label="yenile"
           size="medium"
-          sx={{ ml: "auto", color: "gray" }}
+          sx={{ ml: "auto" }}
         >
           <RefreshIcon />
         </IconButton>
