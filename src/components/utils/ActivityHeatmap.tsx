@@ -93,7 +93,8 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
       </Typography>
 
       {/* Gün isimlerini başlangıç gününe göre hizala */}
-      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="2px" mb={1}>
+      {/* Gün isimleri */}
+      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="1px" mb={1}>
         {Array.from({ length: 7 }).map((_, i) => {
           const index = (startDayIndex + i) % 7;
           return (
@@ -108,8 +109,8 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
         })}
       </Box>
 
-      {/* Hücreleri çiz */}
-      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="2px">
+      {/* Hücreler */}
+      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="1px">
         {cells}
       </Box>
     </Box>
