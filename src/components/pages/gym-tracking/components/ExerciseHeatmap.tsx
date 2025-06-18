@@ -4,24 +4,31 @@ import { ActivityHeatmap } from "../../../utils/ActivityHeatmap";
 
 export const ExerciseHeatmap = () => {
   const [heatmapData, setHeatmapData] = useState<
-    { date: string; value: number }[]
+    { date: string; value: number; name: string }[]
   >([]);
 
   useEffect(() => {
     const stored = localStorage.getItem("exercises");
     const exercises = stored ? JSON.parse(stored) : [];
 
-    const grouped: Record<string, number> = {};
+    const grouped: Record<string, { count: number; name: string[] }> = {};
 
-    exercises.forEach((ex: { date: string }) => {
-      const d = ex.date.split("T")[0]; // sadece yyyy-mm-dd
-      grouped[d] = (grouped[d] || 0) + 1;
+    exercises.forEach((ex: { date: string; name: string }) => {
+      const d = ex.date.split("T")[0];
+      if (!grouped[d]) {
+        grouped[d] = { count: 0, name: [] };
+      }
+      grouped[d].count += 1;
+      grouped[d].name.push(ex.name);
     });
 
-    const heatmapArray = Object.entries(grouped).map(([date, count]) => ({
-      date,
-      value: count, // value alanı önemli!
-    }));
+    const heatmapArray = Object.entries(grouped).map(
+      ([date, { count, name }]) => ({
+        date,
+        value: count,
+        name: name.join(", "),
+      })
+    );
 
     setHeatmapData(heatmapArray);
   }, []);

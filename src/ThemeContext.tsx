@@ -28,15 +28,15 @@ const BlueDarkTheme = responsiveFontSizes(
   createTheme({
     palette: {
       mode: "dark",
-      primary: { main: "#F6F8D5" }, // canlı su mavisi
-      secondary: { main: "#4F959D" }, // açık su buğusu
+      primary: { main: "#F6F8D5" },
+      secondary: { main: "#4F959D" },
       background: {
-        default: "#09122C", // en koyu arka plan
-        paper: "#0F4C75", // kart/diyalog arka planı
+        default: "#09122C",
+        paper: "#0F4C75",
       },
       text: {
-        primary: "#BBE1FA", // okunabilir açık mavi
-        secondary: "#F6F8D5", // detay vurgular
+        primary: "#BBE1FA",
+        secondary: "#F6F8D5",
       },
     },
   })
@@ -57,9 +57,16 @@ const RedDarkTheme = responsiveFontSizes(
   createTheme({
     palette: {
       mode: "dark",
-      primary: { main: "#0C005A" },
-      background: { default: "#222831" },
-      text: { primary: "#FF5200", secondary: "#001219" },
+      primary: { main: "#333" }, //text
+      secondary: { main: "#333" },
+      background: {
+        default: "#333", // bg
+        paper: "#03071E", // drawer
+      },
+      text: {
+        primary: "#DC2F02", // titles
+        secondary: "#F6F8D5",
+      },
     },
   })
 );

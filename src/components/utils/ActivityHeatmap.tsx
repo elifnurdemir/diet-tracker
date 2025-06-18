@@ -4,6 +4,7 @@ import { Box, Tooltip, Typography } from "@mui/material";
 interface ActivityData {
   date: string;
   value: number;
+  name?: string; // name opsiyonel yaptım
 }
 
 interface ActivityHeatmapProps {
@@ -16,7 +17,7 @@ interface ActivityHeatmapProps {
 
 const defaultColorScale = ["#bbdefb", "#42a5f5", "#1e88e5"];
 
-const dayNames = ["Pz", "Pt", "Sa", "Ça", "Pe", "Cu", "Ct"]; // doğru sıralı
+const dayNames = ["Pz", "Pt", "Sa", "Ça", "Pe", "Cu", "Ct"];
 
 export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
   data,
@@ -29,9 +30,9 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
   const startDate = new Date(today);
   startDate.setDate(startDate.getDate() - 41);
 
-  const dateMap = new Map<string, number>();
+  const dateMap = new Map<string, ActivityData>();
   data.forEach((entry) => {
-    dateMap.set(entry.date, entry.value);
+    dateMap.set(entry.date, entry);
   });
 
   const getColorByPercentage = (percentage: number): string => {
@@ -41,7 +42,6 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
     return colorScale[2];
   };
 
-  // 🧠 startDate'in gününü al, 0=pazar, 1=pazartesi...
   const startDayIndex = startDate.getDay();
 
   const cells: JSX.Element[] = [];
@@ -49,9 +49,11 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
     const date = new Date(startDate);
     date.setDate(startDate.getDate() + i);
     const iso = date.toISOString().split("T")[0];
-    const value = dateMap.get(iso) || 0;
+    const entry = dateMap.get(iso);
+    const value = entry?.value || 0;
     const percentage = Math.min(1, value / goal);
     const color = getColorByPercentage(percentage);
+    const names = entry?.name || "";
 
     cells.push(
       <Tooltip
@@ -62,6 +64,11 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
             <Typography variant="body2">
               {value} {unit}
             </Typography>
+            {names && (
+              <Typography variant="body2" sx={{ mt: 0.5, fontStyle: "italic" }}>
+                Egzersizler: {names}
+              </Typography>
+            )}
           </Box>
         }
         arrow
@@ -92,9 +99,7 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
         {title}
       </Typography>
 
-      {/* Gün isimlerini başlangıç gününe göre hizala */}
-      {/* Gün isimleri */}
-      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="1px" mb={1}>
+      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="2px" mb={1}>
         {Array.from({ length: 7 }).map((_, i) => {
           const index = (startDayIndex + i) % 7;
           return (
@@ -109,8 +114,7 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
         })}
       </Box>
 
-      {/* Hücreler */}
-      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="1px">
+      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="2px">
         {cells}
       </Box>
     </Box>
