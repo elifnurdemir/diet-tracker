@@ -34,7 +34,7 @@ export const ExerciseHeatmap = () => {
   }, []);
 
   return (
-    <Container sx={{ mt: 1 }}>
+    <Container sx={{ mt: 10 }}>
       <Stack spacing={4}>
         <ActivityHeatmap title="Egzersiz Takibi" data={heatmapData} goal={5} />
       </Stack>

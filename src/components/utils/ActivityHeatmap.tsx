@@ -93,20 +93,26 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
       <Typography
         variant="h6"
         mb={2}
-        textAlign="center"
-        sx={{ color: "#1e88e5", fontWeight: "bold" }}
+        textAlign={"center"}
+        sx={{ fontWeight: "bold" }}
       >
         {title}
       </Typography>
 
-      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="2px" mb={1}>
+      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="4px" mb={1}>
         {Array.from({ length: 7 }).map((_, i) => {
           const index = (startDayIndex + i) % 7;
           return (
             <Typography
               key={`day-${i}`}
               variant="caption"
-              sx={{ textAlign: "center", fontWeight: "medium" }}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: "bold",
+                height: "100%",
+              }}
             >
               {dayNames[index]}
             </Typography>
@@ -114,7 +120,7 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
         })}
       </Box>
 
-      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="2px">
+      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap={2}>
         {cells}
       </Box>
     </Box>

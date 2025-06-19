@@ -36,7 +36,7 @@ export default function MotivationCard() {
       }}
     >
       <Box display="flex" alignItems="center" mb={1}>
-        <Typography variant="h6" component="div" fontWeight="bold" color="gray">
+        <Typography variant="h6" component="div" fontWeight="bold">
           Günün Motivasyonu
         </Typography>
         <IconButton
