@@ -28,12 +28,10 @@ export default function MotivationCard() {
   return (
     <Card
       sx={{
-        backgroundColor: "text.secondary",
-        boxShadow: 3,
-        borderRadius: 3,
         maxWidth: 300,
         mx: "auto",
-        p: 2,
+        p: 5,
+        mt: 5,
         position: "relative",
       }}
     >
