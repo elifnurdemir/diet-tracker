@@ -7,6 +7,7 @@ import { SnackbarProvider } from "./provider/SnackbarProvider";
 import { WaterTracking } from "./components/pages/water-tracking/WaterTracking";
 import { CustomThemeProvider } from "./ThemeContext";
 import { GymTracking } from "./components/pages/gym-tracking/GymTracking";
+import { MealTracking } from "./components/pages/meal-tracking/MealTracking";
 function App() {
   return (
     <CustomThemeProvider>
@@ -19,6 +20,7 @@ function App() {
                 <Route path={"/"} element={<Home />} />
                 <Route path={"/water"} element={<WaterTracking />} />
                 <Route path={"/gym"} element={<GymTracking />} />
+                <Route path={"/meal"} element={<MealTracking />} />
               </Route>
             </Routes>
           </BrowserRouter>

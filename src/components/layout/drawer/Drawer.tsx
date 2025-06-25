@@ -10,7 +10,13 @@ import {
 import { Link } from "react-router-dom";
 import { DrawerProfile } from "./components/DrawerProfile";
 import { DrawerActions } from "./components/DrawerActions";
-import { WaterDrop, Home, FitnessCenter } from "@mui/icons-material";
+import {
+  WaterDrop,
+  Home,
+  FitnessCenter,
+  FoodBank,
+  RamenDining,
+} from "@mui/icons-material";
 
 const menuItems = [
   {
@@ -27,6 +33,11 @@ const menuItems = [
     label: "Egzersiz Takibi",
     icon: <FitnessCenter />,
     to: "/gym",
+  },
+  {
+    label: "Öğün Takibi",
+    icon: <RamenDining />,
+    to: "/meal",
   },
 ];
 
