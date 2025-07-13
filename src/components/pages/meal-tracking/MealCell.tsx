@@ -4,7 +4,6 @@ import {
   Checkbox,
   IconButton,
   Tooltip,
-  TextField,
   Typography,
   TableCell,
 } from "@mui/material";
@@ -21,15 +20,8 @@ type Props = {
   onInfoClick: () => void;
 };
 
-export const MealCell = ({
-  mealKey,
-  data,
-  date,
-  onUpdate,
-  onInfoClick,
-}: Props) => {
+export const MealCell = ({ mealKey, data, onUpdate, onInfoClick }: Props) => {
   const cell = data || { checked: false, note: "" };
-  const displayDate = format(date, "yyyy-MM-dd");
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -44,24 +36,24 @@ export const MealCell = ({
     <TableCell
       sx={{
         minWidth: 200,
-        minHeight: 180,
+        minHeight: 200,
         verticalAlign: "top",
         border: "1px solid #ddd",
       }}
     >
-      <Box display="flex" alignItems="center" gap={1}>
+      <Box display="flex" alignItems="center" gap={4}>
         <Checkbox
           checked={cell.checked}
           onChange={() => onUpdate(mealKey, { checked: !cell.checked })}
         />
         <Tooltip title="Bilgi">
-          <IconButton onClick={onInfoClick} size="small">
-            <InfoIcon fontSize="small" />
+          <IconButton onClick={onInfoClick} size="medium">
+            <InfoIcon fontSize="medium" />
           </IconButton>
         </Tooltip>
         <Tooltip title="Fotoğraf Ekle">
-          <IconButton size="small" component="label">
-            <AddAPhotoIcon fontSize="small" />
+          <IconButton size="medium" component="label">
+            <AddAPhotoIcon fontSize="medium" />
             <input
               type="file"
               hidden
@@ -73,20 +65,10 @@ export const MealCell = ({
       </Box>
 
       {cell.image && (
-        <Box mt={1}>
+        <Box mt={3}>
           <img src={cell.image} alt="yemek" style={{ width: "100%" }} />
         </Box>
       )}
-
-      <TextField
-        placeholder={`Not - ${displayDate}`}
-        value={cell.note}
-        onChange={(e) => onUpdate(mealKey, { note: e.target.value })}
-        multiline
-        fullWidth
-        size="small"
-        margin="dense"
-      />
 
       {cell.timestamp && (
         <Typography variant="caption" color="textSecondary">

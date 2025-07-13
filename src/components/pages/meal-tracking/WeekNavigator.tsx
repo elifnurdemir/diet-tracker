@@ -9,13 +9,13 @@ type Props = {
 export const WeekNavigator = ({ currentDate, goWeek }: Props) => (
   <Box mb={2} display="flex" alignItems="center" justifyContent="space-between">
     <Button variant="outlined" onClick={() => goWeek(-1)}>
-      ⬅️ Önceki Hafta
+      Önceki Hafta
     </Button>
     <Typography variant="h6">
       {format(currentDate, "'Hafta' w - yyyy")}
     </Typography>
     <Button variant="outlined" onClick={() => goWeek(1)}>
-      Sonraki Hafta ➡️
+      Sonraki Hafta
     </Button>
   </Box>
 );
