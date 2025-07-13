@@ -6,9 +6,9 @@ import { UserProvider } from "./provider/UserProvider";
 import { SnackbarProvider } from "./provider/SnackbarProvider";
 import { WaterTracking } from "./components/pages/water-tracking/WaterTracking";
 import { CustomThemeProvider } from "./ThemeContext";
-import { GymTracking } from "./components/pages/gym-tracking/GymTracking";
 import { MealTracking } from "./components/pages/meal-tracking/MealTracking";
 import WeightTracking from "./components/pages/weight-tracking/WeightTracking";
+import GymTracking from "./components/pages/gym-tracking/GymTracking";
 
 function App() {
   return (
