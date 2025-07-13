@@ -186,7 +186,6 @@ export const MealTracking = () => {
                           alt="yemek"
                           style={{
                             width: "100%",
-                            maxHeight: 100,
                             objectFit: "cover",
                           }}
                         />
