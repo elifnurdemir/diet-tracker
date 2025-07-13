@@ -16,6 +16,7 @@ import {
   FitnessCenter,
   FoodBank,
   RamenDining,
+  MonitorWeight,
 } from "@mui/icons-material";
 
 const menuItems = [
@@ -38,6 +39,11 @@ const menuItems = [
     label: "Öğün Takibi",
     icon: <RamenDining />,
     to: "/meal",
+  },
+  {
+    label: "Kilo Takibi",
+    icon: <MonitorWeight />,
+    to: "/weight",
   },
 ];
 
