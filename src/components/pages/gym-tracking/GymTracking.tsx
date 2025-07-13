@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Select,
   MenuItem,
@@ -16,7 +16,7 @@ type Exercise =
   | "pilates"
   | "kardiyo"
   | "agirlik"
-  | "dansi"
+  | "dans"
   | "atlama"
   | "esneme";
 
@@ -25,7 +25,7 @@ const exerciseColors: Record<Exercise, string> = {
   pilates: "#2196f3",
   kardiyo: "#f44336",
   agirlik: "#9c27b0",
-  dansi: "#ff9800",
+  dans: "#ff9800",
   atlama: "#795548",
   esneme: "#607d8b",
 };
