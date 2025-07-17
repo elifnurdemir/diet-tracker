@@ -1,4 +1,4 @@
-export type PhotoView = "front" | "side" | "back";
+export type PhotoView = "ön" | "yan" | "arka";
 
 export interface WeightEntry {
   date: string;
@@ -7,4 +7,4 @@ export interface WeightEntry {
   photos: Record<PhotoView, string | undefined>;
 }
 
-export const views: PhotoView[] = ["front", "side", "back"];
+export const views: PhotoView[] = ["ön", "yan", "arka"];

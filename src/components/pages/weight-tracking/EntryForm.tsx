@@ -5,8 +5,10 @@ import {
   TextField,
   InputLabel,
   LinearProgress,
+  Collapse,
 } from "@mui/material";
 import { views, type PhotoView, type WeightEntry } from "./types";
+import { ExpandMore, ExpandLess } from "@mui/icons-material";
 
 interface Props {
   onSubmit: (entry: WeightEntry) => void;
@@ -14,13 +16,16 @@ interface Props {
 }
 
 const EntryForm: React.FC<Props> = ({ onSubmit, loading }) => {
-  const [date, setDate] = useState("");
+  const [open, setOpen] = useState(false);
+  const today = new Date().toISOString().split("T")[0];
+  const [date, setDate] = useState(today);
+
   const [weight, setWeight] = useState<number | "">("");
   const [goal, setGoal] = useState<number | "">("");
   const [photos, setPhotos] = useState<Record<PhotoView, string | undefined>>({
-    front: undefined,
-    side: undefined,
-    back: undefined,
+    ön: undefined,
+    yan: undefined,
+    arka: undefined,
   });
 
   const handlePhotoChange = (
@@ -47,73 +52,101 @@ const EntryForm: React.FC<Props> = ({ onSubmit, loading }) => {
     setDate("");
     setWeight("");
     setGoal("");
-    setPhotos({ front: undefined, side: undefined, back: undefined });
+    setPhotos({ ön: undefined, yan: undefined, arka: undefined });
+    setOpen(false);
   };
 
   return (
     <Box>
-      <Box
-        sx={{ display: "flex", gap: 2, flexWrap: "wrap", alignItems: "center" }}
+      <Button
+        variant="outlined"
+        onClick={() => setOpen((prev) => !prev)}
+        sx={{ mb: 2 }}
+        endIcon={open ? <ExpandLess /> : <ExpandMore />}
       >
-        <TextField
-          type="date"
-          label="Tarih"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          InputLabelProps={{ shrink: true }}
-          sx={{ minWidth: 150 }}
-        />
-        <TextField
-          type="number"
-          label="Kilo (kg)"
-          value={weight}
-          onChange={(e) => setWeight(Number(e.target.value))}
-          sx={{ minWidth: 120 }}
-        />
-        <TextField
-          type="number"
-          label="Haftalık Hedef (kg)"
-          value={goal}
-          onChange={(e) =>
-            setGoal(e.target.value === "" ? "" : Number(e.target.value))
-          }
-          sx={{ minWidth: 150 }}
-          helperText="Opsiyonel"
-        />
-      </Box>
-
-      <Box sx={{ display: "flex", gap: 3, mt: 2, flexWrap: "wrap" }}>
-        {views.map((view) => (
-          <Box key={view} sx={{ textAlign: "center" }}>
-            <InputLabel>{view.toUpperCase()} Fotoğraf</InputLabel>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => handlePhotoChange(e, view)}
-              style={{ display: "block", margin: "8px auto" }}
-            />
-            {photos[view] && (
-              <img
-                src={photos[view]}
-                alt={`${view} preview`}
-                style={{
-                  width: 100,
-                  height: 100,
-                  objectFit: "cover",
-                  borderRadius: 8,
-                  marginTop: 4,
-                  border: "1px solid #ccc",
-                }}
-              />
-            )}
-          </Box>
-        ))}
-      </Box>
-
-      <Button onClick={handleSubmit} variant="contained" sx={{ mt: 3 }}>
-        Kaydet
+        {open ? "Gizle" : "➕ Haftalık Kilo Girişi"}
       </Button>
-      {loading && <LinearProgress sx={{ mt: 2 }} />}
+
+      <Collapse in={open}>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 5,
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <TextField
+            type="date"
+            label="Tarih"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            InputLabelProps={{ shrink: true }}
+            sx={{ minWidth: 150 }}
+          />
+          <TextField
+            type="number"
+            label="Kilo (kg)"
+            value={weight}
+            onChange={(e) => setWeight(Number(e.target.value))}
+            sx={{ minWidth: 120 }}
+          />
+          <TextField
+            type="number"
+            label="Haftalık Hedef (kg)"
+            value={goal}
+            onChange={(e) =>
+              setGoal(e.target.value === "" ? "" : Number(e.target.value))
+            }
+            sx={{ minWidth: 120 }}
+          />
+        </Box>
+
+        <Box
+          sx={{
+            display: "flex",
+            gap: 5,
+            mt: 2,
+            flexWrap: "wrap",
+            justifyContent: "center",
+          }}
+        >
+          {views.map((view) => (
+            <Box key={view} sx={{ textAlign: "center" }}>
+              <InputLabel>{view.toUpperCase()} Fotoğraf</InputLabel>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => handlePhotoChange(e, view)}
+                style={{ display: "block", margin: "8px auto" }}
+              />
+              {photos[view] && (
+                <img
+                  src={photos[view]}
+                  alt={`${view} preview`}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    objectFit: "cover",
+                    borderRadius: 8,
+                    marginTop: 4,
+                    border: "1px solid #ccc",
+                  }}
+                />
+              )}
+            </Box>
+          ))}
+        </Box>
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          sx={{ mt: 3, display: "block", mx: "auto" }}
+        >
+          Kaydet
+        </Button>
+        {loading && <LinearProgress sx={{ mt: 2 }} />}
+      </Collapse>
     </Box>
   );
 };
