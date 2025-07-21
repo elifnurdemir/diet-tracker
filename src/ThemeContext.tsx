@@ -5,6 +5,7 @@ import {
   createTheme,
 } from "@mui/material/styles";
 import { DarkTheme, LightTheme } from "./theme";
+
 const sharedTypography = {
   fontFamily: '"Quicksand", sans-serif',
   h1: { fontWeight: 700, fontSize: "3rem" },
@@ -18,8 +19,8 @@ const BlueLightTheme = responsiveFontSizes(
       mode: "light",
       primary: { main: "#3FC1C0" },
       secondary: { main: "#5e6472" },
-      background: { default: "#EEEEEE", paper: "#3fc1c0" },
-      text: { primary: "#ffffffff", secondary: "#000000ff" },
+      background: { default: "#ede7e3", paper: "#3a506b" },
+      text: { primary: "#b2f7ef", secondary: "#000000ff" },
     },
     typography: sharedTypography,
   })
@@ -68,8 +69,8 @@ const GreenLightTheme = responsiveFontSizes(
       mode: "light",
       primary: { main: "#4CAF50" },
       secondary: { main: "#81C784" },
-      background: { default: "#f1f8e9", paper: "#c8e6c9" },
-      text: { primary: "#1B5E20", secondary: "#2e7d32" },
+      background: { default: "#fefae0", paper: "#344e41" },
+      text: { primary: "#96c5b0", secondary: "#34252f" },
     },
     typography: sharedTypography,
   })
@@ -91,10 +92,10 @@ const OrangeLightTheme = responsiveFontSizes(
   createTheme({
     palette: {
       mode: "light",
-      primary: { main: "#FF9800" },
+      primary: { main: "#682a92" },
       secondary: { main: "#FFCC80" },
-      background: { default: "#FFF3E0", paper: "#FFE0B2" },
-      text: { primary: "#E65100", secondary: "#6D4C41" },
+      background: { default: "#ffffe0", paper: "#fff599" },
+      text: { primary: "#6e4c0d", secondary: "#6D4C41" },
     },
     typography: sharedTypography,
   })
@@ -118,8 +119,8 @@ const PinkLightTheme = responsiveFontSizes(
       mode: "light",
       primary: { main: "#EC407A" },
       secondary: { main: "#F8BBD0" },
-      background: { default: "#FFF0F5", paper: "#FCE4EC" },
-      text: { primary: "#880E4F", secondary: "#4A148C" },
+      background: { default: "#FFF0F5", paper: "#ffb3c6" },
+      text: { primary: "#ff0a54", secondary: "#4A148C" },
     },
     typography: sharedTypography,
   })
