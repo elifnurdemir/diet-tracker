@@ -15,7 +15,13 @@ export const DrawerProfile = () => {
     <>
       <ListItem sx={{ py: 0 }}>
         <Stack flex={1}>
-          <Stack spacing={2} direction="row" alignItems="center" p={2}>
+          <Stack
+            spacing={2}
+            direction="row"
+            alignItems="center"
+            p={3}
+            justifyContent={"center"}
+          >
             <Avatar
               alt={userData.name}
               src={userData.image ?? undefined}

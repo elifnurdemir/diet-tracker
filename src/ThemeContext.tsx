@@ -4,9 +4,7 @@ import {
   responsiveFontSizes,
   createTheme,
 } from "@mui/material/styles";
-import { DarkTheme, LightTheme } from "./theme"; // mevcut royalVelvet temaları
-
-// 🎯 Ortak tipografi
+import { DarkTheme, LightTheme } from "./theme";
 const sharedTypography = {
   fontFamily: '"Quicksand", sans-serif',
   h1: { fontWeight: 700, fontSize: "3rem" },
@@ -14,9 +12,6 @@ const sharedTypography = {
   body1: { fontWeight: 600, fontSize: "1rem" },
 };
 
-//
-// ✅ Blue Theme
-//
 const BlueLightTheme = responsiveFontSizes(
   createTheme({
     palette: {
@@ -42,10 +37,6 @@ const BlueDarkTheme = responsiveFontSizes(
     typography: sharedTypography,
   })
 );
-
-//
-// ✅ Red Theme
-//
 const RedLightTheme = responsiveFontSizes(
   createTheme({
     palette: {
@@ -71,10 +62,6 @@ const RedDarkTheme = responsiveFontSizes(
     typography: sharedTypography,
   })
 );
-
-//
-// ✅ Green Theme
-//
 const GreenLightTheme = responsiveFontSizes(
   createTheme({
     palette: {
@@ -100,10 +87,6 @@ const GreenDarkTheme = responsiveFontSizes(
     typography: sharedTypography,
   })
 );
-
-//
-// ✅ Orange Theme
-//
 const OrangeLightTheme = responsiveFontSizes(
   createTheme({
     palette: {
@@ -129,10 +112,6 @@ const OrangeDarkTheme = responsiveFontSizes(
     typography: sharedTypography,
   })
 );
-
-//
-// ✅ Pink Theme (yeni eklendi)
-//
 const PinkLightTheme = responsiveFontSizes(
   createTheme({
     palette: {
@@ -159,9 +138,6 @@ const PinkDarkTheme = responsiveFontSizes(
   })
 );
 
-//
-// 🔧 Tipler
-//
 type ThemeName = "royalVelvet" | "blue" | "red" | "green" | "orange" | "pink";
 
 type Mode = "light" | "dark";
