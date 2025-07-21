@@ -41,7 +41,8 @@ export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
       justifyContent="space-between"
     >
       <Box>
-        <Box px={5} py={5}>
+        <Box px={4} py={4}>
+          <DrawerActions />
           <DrawerProfile />
         </Box>
 
@@ -53,8 +54,9 @@ export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
                 to={to}
                 selected={location.pathname === to}
                 sx={{
-                  py: 2, // vertical padding artırılır
-                  minHeight: 56, // yükseklik artırılır
+                  py: 4,
+                  minHeight: 70,
+                  px: 8,
                 }}
               >
                 <ListItemIcon sx={{ minWidth: 50 }}>{icon}</ListItemIcon>
@@ -69,12 +71,6 @@ export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
             </ListItem>
           ))}
         </List>
-      </Box>
-
-      <Box>
-        <Box px={2} py={1}>
-          <DrawerActions />
-        </Box>
       </Box>
     </Box>
   );
