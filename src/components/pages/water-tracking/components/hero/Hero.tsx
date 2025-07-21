@@ -1,6 +1,6 @@
 import { DailyGoal } from "./daily-goal/DailyGoal";
 import { DrinkButton } from "./drink-button/DrinkButton";
-import { Stack, Box, Container } from "@mui/material";
+import { Stack, Box } from "@mui/material";
 import { WaterHeatmap } from "./water-heatmap/WaterHeatmap";
 import { useThemeContext } from "../../../../../ThemeContext";
 import { useEffect } from "react";

@@ -11,7 +11,7 @@ const colorPalette = {
   light: {
     primaryMain: "#8367c7",
     primaryContrastText: "#ffffffff",
-    backgroundDefault: "#edf6f9",
+    backgroundDefault: "#f2f2f2",
     textPrimary: "#22223b",
   },
 };

@@ -5,8 +5,14 @@ import EntryForm from "./EntryForm";
 import Chart from "./Chart";
 import MotivationCard from "./MotivationCard";
 import PhotoGallery from "./PhotoGallery";
+import { useThemeContext } from "../../../ThemeContext";
 
 const WeightTracker = () => {
+  const { setTheme } = useThemeContext();
+
+  useEffect(() => {
+    setTheme("orange");
+  }, []);
   const [entries, setEntries] = useState<WeightEntry[]>([]);
   const [loading, setLoading] = useState(false);
 

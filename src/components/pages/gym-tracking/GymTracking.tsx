@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -17,6 +17,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from "recharts";
+import { useThemeContext } from "../../../ThemeContext";
 
 type GymEntry = {
   id: string;
@@ -38,6 +39,11 @@ const exerciseColors = {
 const daysShort = ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"];
 
 export default function GymCalendar() {
+  const { setTheme } = useThemeContext();
+
+  useEffect(() => {
+    setTheme("red");
+  }, []);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [entries, setEntries] = useState<GymEntry[]>(() => {
     const saved = localStorage.getItem("gymEntries");
@@ -123,7 +129,12 @@ export default function GymCalendar() {
   return (
     <Box p={2}>
       {/* Ay Değiştirici */}
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+        color={"#254441"}
+      >
         <IconButton onClick={() => changeMonth(-1)}>
           <ChevronLeft />
         </IconButton>
@@ -143,7 +154,7 @@ export default function GymCalendar() {
         value={selectedType}
         onChange={(e) => setSelectedType(e.target.value)}
         size="small"
-        sx={{ mt: 2 }}
+        sx={{ mt: 2, color: "#254441" }}
       >
         <MenuItem value="hepsi">Tümü</MenuItem>
         {Object.keys(exerciseColors).map((key) => (
@@ -156,7 +167,7 @@ export default function GymCalendar() {
       {/* Takvim */}
       <Box mt={3} display="grid" gridTemplateColumns="repeat(7, 1fr)" gap={1}>
         {daysShort.map((d) => (
-          <Typography key={d} align="center" fontWeight="bold">
+          <Typography key={d} align="center" fontWeight="bold" color="#254441">
             {d}
           </Typography>
         ))}
@@ -171,11 +182,11 @@ export default function GymCalendar() {
               minHeight={isMobile ? 60 : 90}
               sx={{
                 border: "1px solid #ccc",
-                borderRadius: 2,
+                borderRadius: 20,
                 backgroundColor: entry
                   ? exerciseColors[entry.exercise] || "#eee"
                   : dateStr
-                  ? "#fff"
+                  ? "#1111"
                   : "transparent",
                 opacity: dateStr ? 1 : 0.2,
                 cursor: dateStr ? "pointer" : "default",

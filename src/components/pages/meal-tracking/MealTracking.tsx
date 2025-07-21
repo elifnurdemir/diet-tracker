@@ -6,11 +6,17 @@ import { MealTable } from "./MealTable";
 import { InfoDialog } from "./InfoDialog";
 import { STORAGE_KEY, days, meals } from "./constants";
 import type { MealCellData, WeekData } from "./types";
+import { useThemeContext } from "../../../ThemeContext";
 
 const getWeekKey = (date: Date) =>
   `${date.getFullYear()}-${String(getISOWeek(date)).padStart(2, "0")}`;
 
 export const MealTracking = () => {
+  const { setTheme } = useThemeContext();
+
+  useEffect(() => {
+    setTheme("green");
+  }, []);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [allData, setAllData] = useState<Record<string, WeekData>>({});
   const [infoOpen, setInfoOpen] = useState<string | null>(null);

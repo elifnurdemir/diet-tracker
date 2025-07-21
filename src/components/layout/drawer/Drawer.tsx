@@ -14,7 +14,6 @@ import {
   WaterDrop,
   Home,
   FitnessCenter,
-  FoodBank,
   RamenDining,
   MonitorWeight,
 } from "@mui/icons-material";
