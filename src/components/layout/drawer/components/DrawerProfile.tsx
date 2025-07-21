@@ -15,22 +15,22 @@ export const DrawerProfile = () => {
     <>
       <ListItem sx={{ py: 0 }}>
         <Stack flex={1}>
-          <Stack spacing={1} direction="row" alignItems="center" p={2}>
+          <Stack spacing={2} direction="row" alignItems="center" p={2}>
             <Avatar
               alt={userData.name}
               src={userData.image ?? undefined}
-              sx={{ width: 64, height: 64 }}
+              sx={{ width: 80, height: 80, flexShrink: 0 }}
             />
-            <Box>
-              <Typography variant="h6">{userData.name}</Typography>
-              <Typography variant="body1">
-                {userData.gender} , {userData.age}
+            <Box flex={1} minWidth={0}>
+              <Typography variant="h6" noWrap>
+                {userData.name}
+              </Typography>
+              <Typography variant="body1" noWrap>
+                {userData.gender}, {userData.age}
               </Typography>
             </Box>
           </Stack>
-
-          <Divider />
-
+          <Divider></Divider>
           <Stack spacing={1} direction="row" alignItems="center">
             <Stack flex={1} alignItems="center" p={1}>
               <Typography variant="h6">Kilo</Typography>
@@ -46,7 +46,6 @@ export const DrawerProfile = () => {
           </Stack>
         </Stack>
       </ListItem>
-      <Divider />
     </>
   );
 };

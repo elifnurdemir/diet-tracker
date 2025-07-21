@@ -7,7 +7,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { DrawerProfile } from "./components/DrawerProfile";
 import { DrawerActions } from "./components/DrawerActions";
 import {
@@ -19,31 +19,11 @@ import {
 } from "@mui/icons-material";
 
 const menuItems = [
-  {
-    label: "Anasayfa",
-    icon: <Home />,
-    to: "/",
-  },
-  {
-    label: "Su İçme Takibi",
-    icon: <WaterDrop />,
-    to: "/water",
-  },
-  {
-    label: "Egzersiz Takibi",
-    icon: <FitnessCenter />,
-    to: "/gym",
-  },
-  {
-    label: "Öğün Takibi",
-    icon: <RamenDining />,
-    to: "/meal",
-  },
-  {
-    label: "Kilo Takibi",
-    icon: <MonitorWeight />,
-    to: "/weight",
-  },
+  { label: "Anasayfa", icon: <Home />, to: "/" },
+  { label: "Su İçme Takibi", icon: <WaterDrop />, to: "/water" },
+  { label: "Egzersiz Takibi", icon: <FitnessCenter />, to: "/gym" },
+  { label: "Öğün Takibi", icon: <RamenDining />, to: "/meal" },
+  { label: "Kilo Takibi", icon: <MonitorWeight />, to: "/weight" },
 ];
 
 type AppDrawerProps = {
@@ -51,20 +31,51 @@ type AppDrawerProps = {
 };
 
 export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
+  const location = useLocation();
+
   const DrawerList = (
-    <Box>
-      <List>
-        <DrawerActions />
-        <DrawerProfile />
-        {menuItems.map(({ label, icon, to }) => (
-          <ListItem key={label} disablePadding>
-            <ListItemButton component={Link} to={to}>
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={label} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
+    <Box
+      display="flex"
+      flexDirection="column"
+      height="100%"
+      justifyContent="space-between"
+    >
+      <Box>
+        <Box px={5} py={5}>
+          <DrawerProfile />
+        </Box>
+
+        <List>
+          {menuItems.map(({ label, icon, to }) => (
+            <ListItem key={label} disablePadding>
+              <ListItemButton
+                component={Link}
+                to={to}
+                selected={location.pathname === to}
+                sx={{
+                  py: 2, // vertical padding artırılır
+                  minHeight: 56, // yükseklik artırılır
+                }}
+              >
+                <ListItemIcon sx={{ minWidth: 50 }}>{icon}</ListItemIcon>
+                <ListItemText
+                  primary={label}
+                  primaryTypographyProps={{
+                    fontSize: "1.1rem", // yazı boyutu büyütülür
+                    fontWeight: 500,
+                  }}
+                />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+
+      <Box>
+        <Box px={2} py={1}>
+          <DrawerActions />
+        </Box>
+      </Box>
     </Box>
   );
 

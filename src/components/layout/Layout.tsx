@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 import { AppDrawer } from "./drawer/Drawer";
 
 export const Layout = () => {
-  const DrawerWidth = 380;
+  const DrawerWidth = 350;
 
   return (
     <Box>
