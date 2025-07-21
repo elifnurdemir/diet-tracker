@@ -1,19 +1,18 @@
 import { useUser } from "../../../../../../provider/UserProvider";
-import { Box, CardContent, Typography } from "@mui/material";
+import { Box, CardContent, Typography, useTheme } from "@mui/material";
 
-// yardimci fonksiyon: hedef miktara göre uygun aralık (step) belirler
 const getStepForScale = (max: number) => {
   if (max <= 500) return 100;
   if (max <= 1000) return 200;
   if (max <= 2000) return 250;
   if (max <= 3000) return 500;
-  return 500; // maksimum step'i 500 tut
+  return 500;
 };
 
 export const DailyGoal = () => {
   const { dailyIdealWater, todayTotalWaterAmount } = useUser();
+  const theme = useTheme();
 
-  // yüzde hesapla
   const percentage =
     dailyIdealWater && dailyIdealWater > 0
       ? (todayTotalWaterAmount / dailyIdealWater) * 100
@@ -21,11 +20,9 @@ export const DailyGoal = () => {
 
   const topPercent = 100 - percentage;
 
-  // iç ölçek (ölçüm çizgileri) oluştur
   const marks = [];
   if (dailyIdealWater && dailyIdealWater > 0) {
     const step = getStepForScale(dailyIdealWater);
-
     for (let value = 0; value <= dailyIdealWater; value += step) {
       const position = (value / dailyIdealWater) * 100;
       marks.push({
@@ -35,7 +32,6 @@ export const DailyGoal = () => {
       });
     }
 
-    // hedefin tam değeri eksikse son çizgiyi ekle
     const lastMark = marks[marks.length - 1];
     if (lastMark?.value < dailyIdealWater) {
       marks.push({
@@ -46,61 +42,49 @@ export const DailyGoal = () => {
     }
   }
 
+  const primaryColor = theme.palette.primary.main;
+  const secondaryColor = theme.palette.secondary.main;
+  const waterColor = `${theme.palette.primary.main}cc`; // yarı saydam
+  const bgColor = theme.palette.background.paper;
+
   return (
-    <div
-      style={{
+    <Box
+      sx={{
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: "24px",
-        padding: "24px",
+        gap: 3,
+        p: 3,
       }}
     >
-      {/* başlık ve toplam miktar */}
-      <div style={{ textAlign: "center" }}>
-        <h2
-          style={{
-            fontSize: "28px",
-            fontWeight: "bold",
-            color: "text.primary",
-            margin: "0 0 8px",
-          }}
-        >
+      <Box sx={{ textAlign: "center" }}>
+        <Typography variant="h5" fontWeight="bold" color="text.secondary">
           Günlük Su İçme Hedefiniz
-        </h2>
-        <p
-          style={{
-            fontSize: "body1",
-            color: "text.primary",
-            fontWeight: "bold",
-            margin: "4px 0 0",
-          }}
-        >
+        </Typography>
+        <Typography variant="body1" fontWeight="bold" color="text.secondary">
           %{Math.round(percentage)} tamamlandı
-        </p>{" "}
-      </div>
+        </Typography>
+      </Box>
 
-      {/* su kabı görseli */}
-      <div
-        style={{
-          width: "320px",
-          height: "320px",
-          border: "6px solid #0F4C75",
+      <Box
+        sx={{
+          width: 200,
+          height: 400,
+          border: `10px solid ${secondaryColor}`,
           borderTop: "none",
-          borderBottomRightRadius: "70px",
-          borderBottomLeftRadius: "70px",
+          borderBottomRightRadius: 80,
+          borderBottomLeftRadius: 80,
           position: "relative",
           overflow: "hidden",
           backgroundColor: "transparent",
-          boxShadow: "0 8px 25px rgba(44, 90, 160, 0.15)",
+          boxShadow: `0 8px 25px ${primaryColor}22`,
         }}
       >
-        {/* animasyonlu su seviyesi */}
-        <div
-          style={{
-            width: "600px",
-            height: "600px",
-            backgroundColor: "#33cfff88",
+        <Box
+          sx={{
+            width: 600,
+            height: 600,
+            backgroundColor: waterColor,
             position: "absolute",
             top: `${topPercent}%`,
             left: "50%",
@@ -112,11 +96,11 @@ export const DailyGoal = () => {
             zIndex: 1,
           }}
         />
-        <div
-          style={{
-            width: "600px",
-            height: "600px",
-            backgroundColor: "#33cfff88",
+        <Box
+          sx={{
+            width: 600,
+            height: 600,
+            backgroundColor: waterColor,
             position: "absolute",
             top: `${topPercent + 2}%`,
             left: "50%",
@@ -141,36 +125,30 @@ export const DailyGoal = () => {
             zIndex: 10,
           }}
         >
-          {marks.map((mark, index) => {
-            return (
-              <Box
-                key={mark.value}
-                sx={{
-                  backgroundColor: "#0F4C75",
-                  borderTopLeftRadius: "20px",
-                  borderBottomLeftRadius: "20px",
-                  px: 1,
-                  top: mark.position,
-                  visibility: index === 0 ? "hidden" : "visible",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  sx={{ color: "white", fontSize: "12px" }}
-                >
-                  {mark.label}
-                </Typography>
-              </Box>
-            );
-          })}
+          {marks.map((mark, index) => (
+            <Box
+              key={mark.value}
+              sx={{
+                backgroundColor: secondaryColor,
+                borderTopLeftRadius: 8,
+                borderBottomLeftRadius: 2,
+                px: 1,
+                top: mark.position,
+                visibility: index === 0 ? "hidden" : "visible",
+              }}
+            >
+              <Typography variant="body2" sx={{ color: "white", fontSize: 12 }}>
+                {mark.label}
+              </Typography>
+            </Box>
+          ))}
         </Box>
 
         {/* mevcut seviye çizgisi */}
         {dailyIdealWater && dailyIdealWater > 0 && (
-          <div
-            style={{
+          <Box
+            sx={{
               position: "relative",
-
               top: `${topPercent}%`,
               width: "100%",
               display: "flex",
@@ -178,50 +156,50 @@ export const DailyGoal = () => {
               zIndex: 100,
             }}
           >
-            <div
-              style={{
+            <Box
+              sx={{
                 width: "50%",
-                height: "3px",
-                right: "0px",
+                height: 3,
                 position: "absolute",
-                backgroundColor: "#0F4C75",
-                borderRadius: "2px",
+                right: 0,
+                backgroundColor: primaryColor,
+                borderRadius: 2,
                 display: "flex",
                 alignItems: "center",
               }}
             >
-              <div
-                style={{
-                  backgroundColor: "#0F4C75",
+              <Box
+                sx={{
+                  backgroundColor: primaryColor,
                   color: "white",
-                  padding: "2px 6px",
-                  borderRadius: "12px",
-                  fontSize: "10px",
+                  px: 1,
+                  py: 0.25,
+                  borderRadius: 2,
+                  fontSize: 10,
                   fontWeight: "bold",
                 }}
               >
                 {Math.round(todayTotalWaterAmount)}ml
-              </div>
-            </div>
-          </div>
+              </Box>
+            </Box>
+          </Box>
         )}
 
-        {/* görsel derinlik için gradient overlay */}
-        <div
-          style={{
+        {/* görsel derinlik efekti */}
+        <Box
+          sx={{
             position: "absolute",
             top: 0,
             left: 0,
             right: 0,
             bottom: 0,
-            background:
-              "linear-gradient(135deg, transparent 0%, rgba(44, 90, 160, 0.1) 100%)",
+            background: `linear-gradient(135deg, transparent 0%, ${primaryColor}22 100%)`,
             pointerEvents: "none",
             zIndex: 4,
           }}
         />
 
-        {/* wave animasyonları */}
+        {/* wave animation css */}
         <style>{`
           @keyframes waves {
             0% { transform: translateX(-50%) rotate(0deg); }
@@ -232,17 +210,16 @@ export const DailyGoal = () => {
             100% { transform: translateX(-50%) rotate(0deg); }
           }
         `}</style>
-      </div>
+      </Box>
 
       {/* kalan miktar kutusu */}
-
       <Box
         sx={{
-          backgroundColor: "background.paper",
+          backgroundColor: bgColor,
           borderRadius: 3,
           minWidth: 220,
           textAlign: "center",
-          boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.04)",
+          boxShadow: `0px 2px 8px ${primaryColor}33`,
         }}
       >
         <CardContent>
@@ -252,7 +229,11 @@ export const DailyGoal = () => {
 
           <Typography
             variant="h4"
-            sx={{ color: "white", fontWeight: "bold", mb: 1 }}
+            sx={{
+              color: theme.palette.text.primary,
+              fontWeight: "bold",
+              mb: 1,
+            }}
           >
             {Math.max(0, (dailyIdealWater ?? 0) - todayTotalWaterAmount)}ml
           </Typography>
@@ -262,7 +243,7 @@ export const DailyGoal = () => {
           </Typography>
         </CardContent>
       </Box>
-    </div>
+    </Box>
   );
 };
 

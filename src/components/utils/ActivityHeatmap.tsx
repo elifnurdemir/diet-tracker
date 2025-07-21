@@ -1,10 +1,11 @@
 import React, { type JSX } from "react";
 import { Box, Tooltip, Typography } from "@mui/material";
+import type { SxProps, Theme } from "@mui/material/styles";
 
 interface ActivityData {
   date: string;
   value: number;
-  name?: string; // name opsiyonel yaptım
+  name?: string;
 }
 
 interface ActivityHeatmapProps {
@@ -13,10 +14,11 @@ interface ActivityHeatmapProps {
   title?: string;
   unit?: string;
   colorScale?: string[];
+  titleColor?: string;
+  titleSx?: SxProps<Theme>;
 }
 
 const defaultColorScale = ["#bbdefb", "#42a5f5", "#1e88e5"];
-
 const dayNames = ["Pz", "Pt", "Sa", "Ça", "Pe", "Cu", "Ct"];
 
 export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
@@ -25,6 +27,8 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
   title = "Aktivite Takibi",
   unit = "",
   colorScale = defaultColorScale,
+  titleColor,
+  titleSx,
 }) => {
   const today = new Date();
   const startDate = new Date(today);
@@ -93,13 +97,17 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
       <Typography
         variant="h6"
         mb={2}
-        textAlign={"center"}
-        sx={{ fontWeight: "bold" }}
+        textAlign="center"
+        sx={{
+          fontWeight: "bold",
+          color: titleColor || "text.primary",
+          ...titleSx,
+        }}
       >
         {title}
       </Typography>
 
-      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="4px" mb={1}>
+      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="1px" mb={1}>
         {Array.from({ length: 7 }).map((_, i) => {
           const index = (startDayIndex + i) % 7;
           return (
@@ -112,6 +120,7 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
                 justifyContent: "center",
                 fontWeight: "bold",
                 height: "100%",
+                color: titleColor || "text.primary",
               }}
             >
               {dayNames[index]}
@@ -120,7 +129,7 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
         })}
       </Box>
 
-      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap={2}>
+      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap={1}>
         {cells}
       </Box>
     </Box>

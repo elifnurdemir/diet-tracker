@@ -1,26 +1,30 @@
 import React, { createContext, useContext, useState } from "react";
 import { ThemeProvider } from "@mui/material/styles";
-import {
-  RoyalVelvetLightThemeWithResponsiveFonts,
-  RoyalVelvetDarkThemeWithResponsiveFonts,
-} from "./theme";
+import { DarkTheme, LightTheme } from "./theme";
 import { responsiveFontSizes, createTheme } from "@mui/material/styles";
+const sharedTypography = {
+  fontFamily: '"Quicksand", sans-serif',
+  h1: { fontWeight: 700, fontSize: "3rem" },
+  h2: { fontWeight: 600, fontSize: "1rem" },
+  body1: { fontWeight: 600, fontSize: "1rem" },
+};
 
 const BlueLightTheme = responsiveFontSizes(
   createTheme({
     palette: {
       mode: "light",
-      primary: { main: "#74BDD3" },
-      secondary: { main: "#A6D9E7" },
+      primary: { main: "#3FC1C0" },
+      secondary: { main: "#5e6472" },
       background: {
-        default: "#EAF4FB",
-        paper: "#FFFFFF",
+        default: "#EEEEEE",
+        paper: "#3fc1c0",
       },
       text: {
-        primary: "#2D3A3A",
-        secondary: "#5F7775",
+        primary: "#ffffffff",
+        secondary: "#000000ff",
       },
     },
+    typography: sharedTypography,
   })
 );
 
@@ -82,7 +86,7 @@ type ThemeContextType = {
 };
 
 const ThemeContext = createContext<ThemeContextType>({
-  currentTheme: RoyalVelvetLightThemeWithResponsiveFonts,
+  currentTheme: LightTheme,
   currentThemeName: "royalVelvet",
   currentMode: "light",
   setTheme: () => {},
@@ -98,21 +102,16 @@ export const CustomThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const getTheme = (name: ThemeName, mode: Mode) => {
     if (name === "royalVelvet")
-      return mode === "light"
-        ? RoyalVelvetLightThemeWithResponsiveFonts
-        : RoyalVelvetDarkThemeWithResponsiveFonts;
+      return mode === "light" ? LightTheme : DarkTheme;
     if (name === "blue")
       return mode === "light" ? BlueLightTheme : BlueDarkTheme;
     if (name === "red") return mode === "light" ? RedLightTheme : RedDarkTheme;
-    return RoyalVelvetLightThemeWithResponsiveFonts;
+    return LightTheme; // default fallback
   };
 
   const theme = getTheme(themeName, mode);
 
-  const setTheme = (
-    name: ThemeName,
-    selectedMode: Mode = theme.palette.mode
-  ) => {
+  const setTheme = (name: ThemeName, selectedMode: Mode = "light") => {
     setThemeName(name);
     setMode(selectedMode);
   };

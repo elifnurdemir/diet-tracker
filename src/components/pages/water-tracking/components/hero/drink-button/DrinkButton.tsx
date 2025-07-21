@@ -27,7 +27,7 @@ export const DrinkButton = () => {
         onClick={handleClickOpen}
         sx={{
           fontSize: "1.25rem",
-          padding: "14px 36px",
+          padding: "1px 1px",
           borderRadius: "16px",
           minWidth: "220px",
           minHeight: "64px",

@@ -8,12 +8,13 @@ export const WaterHeatmap = () => {
   console.log(waterHeatmapData);
 
   return (
-    <Container sx={{ mt: 10 }}>
+    <Container sx={{ mt: 5 }}>
       <Stack spacing={4}>
         <ActivityHeatmap
           data={waterHeatmapData}
           goal={dailyIdealWater || 2000}
           title="Su Takibi"
+          titleColor="primary.main"
           unit="ml"
         />
       </Stack>
