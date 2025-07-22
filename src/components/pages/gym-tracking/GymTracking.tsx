@@ -1,221 +1,107 @@
-import { useEffect, useState } from "react";
-import {
-  Box,
-  Typography,
-  Select,
-  MenuItem,
-  IconButton,
-  useMediaQuery,
-} from "@mui/material";
-import { ChevronLeft, ChevronRight } from "@mui/icons-material";
-import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  Tooltip,
-  ResponsiveContainer,
-  CartesianGrid,
-} from "recharts";
-import { useThemeContext } from "../../../ThemeContext";
-
-type GymEntry = {
-  id: string;
-  date: string;
-  duration: number;
-  exercise: keyof typeof exerciseColors;
-};
-
-const exerciseColors = {
-  yoga: "#4caf50",
-  pilates: "#2196f3",
-  kardiyo: "#f44336",
-  agirlik: "#9c27b0",
-  dans: "#ff9800",
-  atlama: "#795548",
-  esneme: "#607d8b",
-};
-
-const daysShort = ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"];
+import { useState, useEffect } from "react";
+import { Box, Typography, IconButton } from "@mui/material";
+import { ArrowBack, ArrowForward } from "@mui/icons-material";
+import CalendarGrid from "../../Calendar/CalendarGrid";
+import AddExerciseDialog from "../../Calendar/Dialog";
+import WeeklyChart from "../../Calendar/WeeklyChart";
+import type exerciseColors from "../../constants/exerciseColors";
+import type { GymEntry } from "../../types/GymEntry";
+import { getMonthDays } from "../../utils/dateUtils";
 
 export default function GymCalendar() {
-  const { setTheme } = useThemeContext();
+  const [entries, setEntries] = useState<GymEntry[]>([]);
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [duration, setDuration] = useState("");
+  const [exerciseType, setExerciseType] = useState<
+    keyof typeof exerciseColors | ""
+  >("");
+
+  const days = getMonthDays(currentDate);
+  const daysShort = ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"];
 
   useEffect(() => {
-    setTheme("red");
+    const saved = localStorage.getItem("gym-entries");
+    if (saved) setEntries(JSON.parse(saved));
   }, []);
-  const [currentDate, setCurrentDate] = useState(new Date());
-  const [entries, setEntries] = useState<GymEntry[]>(() => {
-    const saved = localStorage.getItem("gymEntries");
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [selectedType, setSelectedType] = useState("hepsi");
-  const isMobile = useMediaQuery("(max-width:600px)");
 
-  const filteredEntries =
-    selectedType === "hepsi"
-      ? entries
-      : entries.filter((e) => e.exercise === selectedType);
+  useEffect(() => {
+    localStorage.setItem("gym-entries", JSON.stringify(entries));
+  }, [entries]);
 
   const handleDayClick = (dateStr: string) => {
-    const duration = prompt("Egzersiz süresi (dk)?");
-    const exercise = prompt(
-      "Egzersiz türü (yoga, pilates, kardiyo, agirlik, dans, atlama, esneme)?"
-    ) as keyof typeof exerciseColors;
+    setSelectedDate(dateStr);
+    setDialogOpen(true);
+  };
 
-    if (
-      !duration ||
-      !exercise ||
-      isNaN(+duration) ||
-      !(exercise in exerciseColors)
-    )
-      return;
+  const generateId = () => {
+    return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  };
+
+  const handleSave = () => {
+    if (!selectedDate || !duration || !exerciseType) return;
 
     const newEntry: GymEntry = {
-      id: Date.now().toString(),
-      date: dateStr,
-      duration: +duration,
-      exercise,
+      id: generateId(),
+      date: selectedDate,
+      duration: parseInt(duration),
+      exercise: exerciseType,
     };
-    const updated = [...entries, newEntry];
-    setEntries(updated);
-    localStorage.setItem("gymEntries", JSON.stringify(updated));
-  };
 
-  const changeMonth = (dir: number) => {
-    const newDate = new Date(currentDate);
-    newDate.setMonth(newDate.getMonth() + dir);
-    setCurrentDate(newDate);
-  };
-
-  const getMonthDays = () => {
-    const year = currentDate.getFullYear();
-    const month = currentDate.getMonth();
-    const firstDay = new Date(year, month, 1);
-    const lastDay = new Date(year, month + 1, 0);
-    const days = [];
-
-    const startOffset = firstDay.getDay();
-    for (let i = 0; i < startOffset; i++) days.push(null);
-
-    for (let d = 1; d <= lastDay.getDate(); d++) {
-      const fullDate = new Date(year, month, d).toISOString().slice(0, 10);
-      days.push(fullDate);
-    }
-
-    return days;
-  };
-
-  const getWeekChartData = () => {
-    const start = new Date();
-    start.setDate(start.getDate() - start.getDay());
-
-    return Array.from({ length: 7 }, (_, i) => {
-      const date = new Date(start);
-      date.setDate(start.getDate() + i);
-      const dateStr = date.toISOString().slice(0, 10);
-
-      const total = filteredEntries
-        .filter((e) => e.date === dateStr)
-        .reduce((acc, e) => acc + e.duration, 0);
-
-      return {
-        name: daysShort[i],
-        sure: total,
-      };
-    });
+    setEntries((prev) => [...prev, newEntry]);
+    setDialogOpen(false);
+    setDuration("");
+    setExerciseType("");
   };
 
   return (
     <Box p={2}>
-      {/* Ay Değiştirici */}
-      <Box
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-        color={"#254441"}
-      >
-        <IconButton onClick={() => changeMonth(-1)}>
-          <ChevronLeft />
+      <Typography variant="h4" align="center" gutterBottom color="#333">
+        Egzersiz Takvimi
+      </Typography>
+
+      <Box display="flex" justifyContent="center" alignItems="center" gap={2}>
+        <IconButton
+          onClick={() =>
+            setCurrentDate(
+              (prev) => new Date(prev.getFullYear(), prev.getMonth() - 1, 1)
+            )
+          }
+        >
+          <ArrowBack />
         </IconButton>
-        <Typography variant="h6">
-          {currentDate.toLocaleString("tr-TR", {
-            month: "long",
+        <Typography variant="h6" color="#222">
+          {currentDate.toLocaleDateString("tr-TR", {
             year: "numeric",
+            month: "long",
           })}
         </Typography>
-        <IconButton onClick={() => changeMonth(1)}>
-          <ChevronRight />
+        <IconButton
+          onClick={() =>
+            setCurrentDate(
+              (prev) => new Date(prev.getFullYear(), prev.getMonth() + 1, 1)
+            )
+          }
+        >
+          <ArrowForward />
         </IconButton>
       </Box>
 
-      {/* Filtre */}
-      <Select
-        value={selectedType}
-        onChange={(e) => setSelectedType(e.target.value)}
-        size="small"
-        sx={{ mt: 2, color: "#254441" }}
-      >
-        <MenuItem value="hepsi">Tümü</MenuItem>
-        {Object.keys(exerciseColors).map((key) => (
-          <MenuItem key={key} value={key}>
-            {key}
-          </MenuItem>
-        ))}
-      </Select>
+      <CalendarGrid days={days} entries={entries} onDayClick={handleDayClick} />
 
-      {/* Takvim */}
-      <Box mt={3} display="grid" gridTemplateColumns="repeat(7, 1fr)" gap={1}>
-        {daysShort.map((d) => (
-          <Typography key={d} align="center" fontWeight="bold" color="#254441">
-            {d}
-          </Typography>
-        ))}
-        {getMonthDays().map((dateStr, i) => {
-          const entry = dateStr
-            ? filteredEntries.find((e) => e.date === dateStr)
-            : null;
-          return (
-            <Box
-              key={i}
-              onClick={() => dateStr && handleDayClick(dateStr)}
-              minHeight={isMobile ? 60 : 90}
-              sx={{
-                border: "1px solid #ccc",
-                borderRadius: 20,
-                backgroundColor: entry
-                  ? exerciseColors[entry.exercise] || "#eee"
-                  : dateStr
-                  ? "#1111"
-                  : "transparent",
-                opacity: dateStr ? 1 : 0.2,
-                cursor: dateStr ? "pointer" : "default",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 14,
-                color: "#000",
-              }}
-            >
-              {dateStr ? +dateStr.slice(-2) : ""}
-            </Box>
-          );
-        })}
-      </Box>
+      <WeeklyChart entries={entries} daysShort={daysShort} />
 
-      {/* Grafik */}
-      <Box mt={4}>
-        <Typography variant="h6">Bu Haftanın Egzersiz Dağılımı</Typography>
-        <ResponsiveContainer width="100%" height={200}>
-          <BarChart data={getWeekChartData()}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis allowDecimals={false} />
-            <Tooltip />
-            <Bar dataKey="sure" fill="#1976d2" />
-          </BarChart>
-        </ResponsiveContainer>
-      </Box>
+      <AddExerciseDialog
+        open={dialogOpen}
+        selectedDate={selectedDate}
+        duration={duration}
+        exerciseType={exerciseType}
+        setDuration={setDuration}
+        setExerciseType={setExerciseType}
+        onClose={() => setDialogOpen(false)}
+        onSave={handleSave}
+      />
     </Box>
   );
 }

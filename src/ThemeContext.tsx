@@ -57,8 +57,8 @@ const RedDarkTheme = responsiveFontSizes(
       mode: "dark",
       primary: { main: "#333" },
       secondary: { main: "#333" },
-      background: { default: "#333", paper: "#03071E" },
-      text: { primary: "#DC2F02", secondary: "#F6F8D5" },
+      background: { default: "#e5e5e5", paper: "#03071E" },
+      text: { primary: "#DC2F02", secondary: "#272726ff" },
     },
     typography: sharedTypography,
   })
