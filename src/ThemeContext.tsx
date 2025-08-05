@@ -69,8 +69,8 @@ const GreenLightTheme = responsiveFontSizes(
       mode: "light",
       primary: { main: "#4CAF50" },
       secondary: { main: "#81C784" },
-      background: { default: "#fefae0", paper: "#344e41" },
-      text: { primary: "#96c5b0", secondary: "#34252f" },
+      background: { default: "#fefae0", paper: "#5a8a72ff" },
+      text: { primary: "#0f1b16ff", secondary: "#34252f" },
     },
     typography: sharedTypography,
   })
