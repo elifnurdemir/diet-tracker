@@ -19,7 +19,6 @@ const EntryForm: React.FC<Props> = ({ onSubmit, loading }) => {
   const [open, setOpen] = useState(false);
   const today = new Date().toISOString().split("T")[0];
   const [date, setDate] = useState(today);
-
   const [weight, setWeight] = useState<number | "">("");
   const [goal, setGoal] = useState<number | "">("");
   const [photos, setPhotos] = useState<Record<PhotoView, string | undefined>>({
@@ -59,7 +58,7 @@ const EntryForm: React.FC<Props> = ({ onSubmit, loading }) => {
   return (
     <Box>
       <Button
-        variant="outlined"
+        variant="contained"
         onClick={() => setOpen((prev) => !prev)}
         sx={{ mb: 2 }}
         endIcon={open ? <ExpandLess /> : <ExpandMore />}
@@ -115,12 +114,17 @@ const EntryForm: React.FC<Props> = ({ onSubmit, loading }) => {
           {views.map((view) => (
             <Box key={view} sx={{ textAlign: "center" }}>
               <InputLabel>{view.toUpperCase()} Fotoğraf</InputLabel>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={(e) => handlePhotoChange(e, view)}
-                style={{ display: "block", margin: "8px auto" }}
-              />
+
+              <Button variant="outlined" component="label" sx={{ mt: 1 }}>
+                {photos[view] ? "Fotoğraf Değiştir" : "Fotoğraf Yükle"}
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={(e) => handlePhotoChange(e, view)}
+                />
+              </Button>
+
               {photos[view] && (
                 <img
                   src={photos[view]}
@@ -130,7 +134,7 @@ const EntryForm: React.FC<Props> = ({ onSubmit, loading }) => {
                     height: 100,
                     objectFit: "cover",
                     borderRadius: 8,
-                    marginTop: 4,
+                    marginTop: 8,
                     border: "1px solid #ccc",
                   }}
                 />
