@@ -1,26 +1,15 @@
 import React from "react";
-import {
-  Box,
-  Checkbox,
-  IconButton,
-  Tooltip,
-  Typography,
-  TableCell,
-} from "@mui/material";
+import { Box, Checkbox, IconButton, Tooltip, TableCell } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
-import { format } from "date-fns";
-import type { MealCellData } from "./types";
+import type { MealCellProps } from "./types";
 
-type Props = {
-  mealKey: string;
-  data?: MealCellData;
-  date: Date;
-  onUpdate: (key: string, changes: Partial<MealCellData>) => void;
-  onInfoClick: () => void;
-};
-
-export const MealCell = ({ mealKey, data, onUpdate, onInfoClick }: Props) => {
+export const MealCell = ({
+  mealKey,
+  data,
+  onUpdate,
+  onInfoClick,
+}: MealCellProps) => {
   const cell = data || { checked: false, note: "" };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,28 +21,33 @@ export const MealCell = ({ mealKey, data, onUpdate, onInfoClick }: Props) => {
     reader.readAsDataURL(file);
   };
 
+  const imageSrc = cell.image
+    ? cell.image
+    : `https://picsum.photos/seed/${mealKey}/300/300`; // placeholder
+
   return (
     <TableCell
       sx={{
-        minWidth: 200,
-        minHeight: 200,
+        width: { xs: "100%", sm: 200 },
+        minHeight: { xs: "auto", sm: 200 },
         verticalAlign: "top",
         border: "1px solid #ddd",
+        padding: 1,
       }}
     >
-      <Box display="flex" alignItems="center" gap={4}>
+      <Box display="flex" alignItems="center" gap={1} flexWrap="wrap">
         <Checkbox
           checked={cell.checked}
           onChange={() => onUpdate(mealKey, { checked: !cell.checked })}
         />
         <Tooltip title="Bilgi">
-          <IconButton onClick={onInfoClick} size="medium">
-            <InfoIcon fontSize="medium" />
+          <IconButton onClick={onInfoClick} size="small">
+            <InfoIcon fontSize="small" />
           </IconButton>
         </Tooltip>
         <Tooltip title="Fotoğraf Ekle">
-          <IconButton size="medium" component="label">
-            <AddAPhotoIcon fontSize="medium" />
+          <IconButton size="small" component="label">
+            <AddAPhotoIcon fontSize="small" />
             <input
               type="file"
               hidden
@@ -64,17 +58,13 @@ export const MealCell = ({ mealKey, data, onUpdate, onInfoClick }: Props) => {
         </Tooltip>
       </Box>
 
-      {cell.image && (
-        <Box mt={3}>
-          <img src={cell.image} alt="yemek" style={{ width: "100%" }} />
-        </Box>
-      )}
-
-      {cell.timestamp && (
-        <Typography variant="caption" color="textSecondary">
-          ⏱️ {format(new Date(cell.timestamp), "dd.MM.yyyy HH:mm")}
-        </Typography>
-      )}
+      <Box mt={1}>
+        <img
+          src={imageSrc}
+          alt="yemek"
+          style={{ width: "100%", height: "auto", maxWidth: "100%" }}
+        />
+      </Box>
     </TableCell>
   );
 };
