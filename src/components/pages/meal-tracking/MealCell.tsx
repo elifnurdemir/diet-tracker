@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Checkbox, IconButton, Tooltip, TableCell } from "@mui/material";
 import InfoIcon from "@mui/icons-material/Info";
 import AddAPhotoIcon from "@mui/icons-material/AddAPhoto";
+import CloseIcon from "@mui/icons-material/Close";
 import type { MealCellProps } from "./types";
 
 export const MealCell = ({
@@ -19,6 +20,10 @@ export const MealCell = ({
     reader.onloadend = () =>
       onUpdate(mealKey, { image: reader.result as string });
     reader.readAsDataURL(file);
+  };
+
+  const handleImageDelete = () => {
+    onUpdate(mealKey, { image: undefined });
   };
 
   const imageSrc = cell.image
@@ -58,12 +63,27 @@ export const MealCell = ({
         </Tooltip>
       </Box>
 
-      <Box mt={1}>
+      <Box mt={1} position="relative">
         <img
           src={imageSrc}
           alt="yemek"
           style={{ width: "100%", height: "auto", maxWidth: "100%" }}
         />
+        {cell.image && (
+          <IconButton
+            onClick={handleImageDelete}
+            size="small"
+            sx={{
+              position: "absolute",
+              top: 4,
+              right: 4,
+              backgroundColor: "rgba(255,255,255,0.7)",
+              "&:hover": { backgroundColor: "rgba(255,255,255,0.9)" },
+            }}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+        )}
       </Box>
     </TableCell>
   );
