@@ -41,11 +41,10 @@ export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
       justifyContent="space-between"
     >
       <Box>
-        <Box px={4} py={4}>
+        <Box mb={2}>
           <DrawerActions />
           <DrawerProfile />
         </Box>
-
         <List>
           {menuItems.map(({ label, icon, to }) => (
             <ListItem key={label} disablePadding>
@@ -56,7 +55,7 @@ export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
                 sx={{
                   py: 4,
                   minHeight: 70,
-                  px: 8,
+                  px: 4,
                 }}
               >
                 <ListItemIcon sx={{ minWidth: 50 }}>{icon}</ListItemIcon>

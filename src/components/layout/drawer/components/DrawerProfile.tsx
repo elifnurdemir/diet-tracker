@@ -7,6 +7,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useUser } from "../../../../provider/UserProvider";
+import catImage from "../../../../assets/cat.jpg";
 
 export const DrawerProfile = () => {
   const { userData } = useUser();
@@ -24,15 +25,20 @@ export const DrawerProfile = () => {
           >
             <Avatar
               alt={userData.name}
-              src={userData.image ?? undefined}
-              sx={{ width: 80, height: 80, flexShrink: 0 }}
+              src={userData.image ?? catImage}
+              sx={{
+                width: 100,
+                height: 100,
+                flexShrink: 0,
+                borderRadius: "30%",
+              }}
             />
             <Box flex={1} minWidth={0}>
               <Typography variant="h6" noWrap>
-                {userData.name}
+                {userData.name || "ad"}
               </Typography>
               <Typography variant="body1" noWrap>
-                {userData.gender}, {userData.age}
+                {userData.gender || "cinsiyet"}, {userData.age ?? "yaş"}
               </Typography>
             </Box>
           </Stack>
