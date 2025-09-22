@@ -16,7 +16,7 @@ function App() {
       <CssBaseline />
       <UserProvider>
         <SnackbarProvider>
-          <BrowserRouter>
+          <BrowserRouter basename="/diet-tracker">
             <Routes>
               <Route element={<Layout />}>
                 <Route path={"/"} element={<Home />} />
