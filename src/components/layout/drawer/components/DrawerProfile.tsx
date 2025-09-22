@@ -14,30 +14,30 @@ export const DrawerProfile = () => {
 
   return (
     <>
-      <ListItem sx={{ py: 0 }}>
+      <ListItem sx={{ py: 0, px: 0 }}>
         <Stack flex={1}>
           <Stack
-            spacing={2}
+            spacing={1}
             direction="row"
-            alignItems="center"
-            p={0.5}
+            alignItems="flex-end"
+            p={2}
             justifyContent={"center"}
           >
             <Avatar
               alt={userData.name}
               src={userData.image ?? catImage}
               sx={{
-                width: 100,
-                height: 100,
+                width: 150,
+                height: 150,
                 flexShrink: 0,
-                borderRadius: "30%",
+                borderRadius: "50%",
               }}
             />
             <Box flex={1} minWidth={0}>
               <Typography variant="h6" noWrap>
-                {userData.name || "ad"}
+                {userData.name || "ad"},
               </Typography>
-              <Typography variant="body1" noWrap>
+              <Typography variant="body1" fontWeight={300} noWrap>
                 {userData.gender || "cinsiyet"}, {userData.age ?? "yaş"}
               </Typography>
             </Box>

@@ -7,8 +7,14 @@ import WeeklyChart from "../../Calendar/WeeklyChart";
 import type exerciseColors from "../../constants/exerciseColors";
 import type { GymEntry } from "../../types/GymEntry";
 import { getMonthDays } from "../../utils/dateUtils";
+import { useThemeContext } from "../../../ThemeContext";
 
 export default function GymCalendar() {
+  const { setTheme } = useThemeContext();
+
+  useEffect(() => {
+    return setTheme("white");
+  }, []);
   const [entries, setEntries] = useState<GymEntry[]>([]);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [dialogOpen, setDialogOpen] = useState(false);

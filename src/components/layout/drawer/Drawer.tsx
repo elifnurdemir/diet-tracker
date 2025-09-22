@@ -58,12 +58,14 @@ export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
                   px: 2,
                 }}
               >
-                <ListItemIcon sx={{ minWidth: 50 }}>{icon}</ListItemIcon>
+                <ListItemIcon sx={{ minWidth: 50, color: "primary" }}>
+                  {icon}
+                </ListItemIcon>
                 <ListItemText
                   primary={label}
                   primaryTypographyProps={{
                     fontSize: "1.1rem", // yazı boyutu büyütülür
-                    fontWeight: 500,
+                    fontWeight: 800,
                   }}
                 />
               </ListItemButton>

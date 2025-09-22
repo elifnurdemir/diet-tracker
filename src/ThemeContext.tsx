@@ -63,14 +63,39 @@ const RedDarkTheme = responsiveFontSizes(
     typography: sharedTypography,
   })
 );
+const WhiteLightTheme = responsiveFontSizes(
+  createTheme({
+    palette: {
+      mode: "light",
+      primary: { main: "#4d4545ff" },
+      secondary: { main: "#514b4bff" },
+      background: { default: "#fcf0f0ff", paper: "#fff0f0ff" },
+      text: { primary: "#0f1b16ff", secondary: "#7c777aff" },
+    },
+    typography: sharedTypography,
+  })
+);
+
+const WhiteDarkTheme = responsiveFontSizes(
+  createTheme({
+    palette: {
+      mode: "dark",
+      primary: { main: "#141313ff" },
+      secondary: { main: "#655d5dff" },
+      background: { default: "#a8a8a8ff", paper: "#3c3c3cff" },
+      text: { primary: "#dadadaff", secondary: "#ffffffff" },
+    },
+    typography: sharedTypography,
+  })
+);
 const GreenLightTheme = responsiveFontSizes(
   createTheme({
     palette: {
       mode: "light",
-      primary: { main: "#4CAF50" },
+      primary: { main: "#284214ff" },
       secondary: { main: "#81C784" },
-      background: { default: "#fefae0", paper: "#5a8a72ff" },
-      text: { primary: "#0f1b16ff", secondary: "#34252f" },
+      background: { default: "#f7fff6ff", paper: "#a1edc7ff" },
+      text: { primary: "#0f1b16ff", secondary: "#0d0a0cff" },
     },
     typography: sharedTypography,
   })
@@ -80,10 +105,10 @@ const GreenDarkTheme = responsiveFontSizes(
   createTheme({
     palette: {
       mode: "dark",
-      primary: { main: "#81C784" },
-      secondary: { main: "#388E3C" },
-      background: { default: "#1B1F1B", paper: "#2E7D32" },
-      text: { primary: "#DCEDC8", secondary: "#A5D6A7" },
+      primary: { main: "#9abb9cff" },
+      secondary: { main: "#046009ff" },
+      background: { default: "#1B1F1B", paper: "#2c441aff" },
+      text: { primary: "#a4b58fff", secondary: "#e0fac7ff" },
     },
     typography: sharedTypography,
   })
@@ -92,10 +117,10 @@ const OrangeLightTheme = responsiveFontSizes(
   createTheme({
     palette: {
       mode: "light",
-      primary: { main: "#682a92" },
-      secondary: { main: "#FFCC80" },
-      background: { default: "#ffffe0", paper: "#fff599" },
-      text: { primary: "#6e4c0d", secondary: "#6D4C41" },
+      primary: { main: "#f38e29ff" },
+      secondary: { main: "#8d662aff" },
+      background: { default: "#f9fae1ff", paper: "#ffebc6ff" },
+      text: { primary: "#6e4c0d", secondary: "#372d29ff" },
     },
     typography: sharedTypography,
   })
@@ -105,10 +130,10 @@ const OrangeDarkTheme = responsiveFontSizes(
   createTheme({
     palette: {
       mode: "dark",
-      primary: { main: "#FFCC80" },
+      primary: { main: "#ffca0bff" },
       secondary: { main: "#FFAB40" },
       background: { default: "#2C1B0F", paper: "#4E342E" },
-      text: { primary: "#FFE0B2", secondary: "#FFCCBC" },
+      text: { primary: "#e4d4bdff", secondary: "#FFCCBC" },
     },
     typography: sharedTypography,
   })
@@ -117,10 +142,10 @@ const PinkLightTheme = responsiveFontSizes(
   createTheme({
     palette: {
       mode: "light",
-      primary: { main: "#EC407A" },
-      secondary: { main: "#F8BBD0" },
-      background: { default: "#FFF0F5", paper: "#ffb3c6" },
-      text: { primary: "#ff0a54", secondary: "#4A148C" },
+      primary: { main: "#3f0a1cff" },
+      secondary: { main: "#f7c0d1ff" },
+      background: { default: "#f8f0f2ff", paper: "#f5d2daff" },
+      text: { primary: "#61115bff", secondary: "#9f4896ff" },
     },
     typography: sharedTypography,
   })
@@ -130,16 +155,23 @@ const PinkDarkTheme = responsiveFontSizes(
   createTheme({
     palette: {
       mode: "dark",
-      primary: { main: "#F48FB1" },
-      secondary: { main: "#CE93D8" },
-      background: { default: "#2A1B2E", paper: "#4A148C" },
-      text: { primary: "#F8BBD0", secondary: "#F3E5F5" },
+      primary: { main: "#f04e84ff" },
+      secondary: { main: "#f7e2faff" },
+      background: { default: "#2b1c2fff", paper: "#4A148C" },
+      text: { primary: "#F8BBD0", secondary: "#8c2671ff" },
     },
     typography: sharedTypography,
   })
 );
 
-type ThemeName = "royalVelvet" | "blue" | "red" | "green" | "orange" | "pink";
+type ThemeName =
+  | "royalVelvet"
+  | "blue"
+  | "red"
+  | "green"
+  | "orange"
+  | "pink"
+  | "white";
 
 type Mode = "light" | "dark";
 
@@ -179,6 +211,8 @@ export const CustomThemeProvider: React.FC<{ children: React.ReactNode }> = ({
         return mode === "light" ? OrangeLightTheme : OrangeDarkTheme;
       case "pink":
         return mode === "light" ? PinkLightTheme : PinkDarkTheme;
+      case "white":
+        return mode === "light" ? WhiteLightTheme : WhiteDarkTheme;
       default:
         return LightTheme;
     }

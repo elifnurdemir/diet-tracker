@@ -23,7 +23,7 @@ export const WaterTank = ({
   return (
     <Box
       sx={{
-        width: 200,
+        width: 300,
         height: 400,
         border: `10px solid ${secondaryColor}`,
         borderTop: "none",

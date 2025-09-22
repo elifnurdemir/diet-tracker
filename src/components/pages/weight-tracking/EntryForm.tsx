@@ -135,7 +135,7 @@ const EntryForm: React.FC<Props> = ({ onSubmit, loading }) => {
                     objectFit: "cover",
                     borderRadius: 8,
                     marginTop: 8,
-                    border: "1px solid #ccc",
+                    border: "1px solid #bc4a4aff",
                   }}
                 />
               )}
