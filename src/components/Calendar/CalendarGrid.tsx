@@ -10,8 +10,11 @@ type Props = {
 
 export default function CalendarGrid({ days, entries, onDayClick }: Props) {
   const isMobile = useMediaQuery("(max-width:600px)");
-
   const daysShort = ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"];
+
+  // Bugünün tarihini alıyoruz
+  const today = new Date();
+  const todayStr = today.toISOString().slice(0, 10); // YYYY-MM-DD
 
   return (
     <Box mt={3}>
@@ -21,10 +24,13 @@ export default function CalendarGrid({ days, entries, onDayClick }: Props) {
             {d}
           </Typography>
         ))}
+
         {days.map((dateStr, i) => {
           const entry = dateStr
             ? entries.find((e) => e.date === dateStr)
             : null;
+
+          const isToday = dateStr === todayStr; // Bugün kontrolü
 
           return (
             <Box
@@ -37,6 +43,8 @@ export default function CalendarGrid({ days, entries, onDayClick }: Props) {
                   : dateStr
                   ? "#1111"
                   : "transparent",
+                border: isToday ? "5px solid #5b6349ff" : "none", // Bugün vurgusu
+                borderRadius: 1,
                 opacity: dateStr ? 1 : 0.2,
                 cursor: dateStr ? "pointer" : "default",
                 display: "flex",
