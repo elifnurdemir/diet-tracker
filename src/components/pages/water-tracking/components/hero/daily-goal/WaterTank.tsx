@@ -39,7 +39,7 @@ export const WaterTank = ({
         <Box
           key={i}
           sx={{
-            width: 600,
+            width: 800,
             height: 600,
             backgroundColor: waterColor,
             position: "absolute",
