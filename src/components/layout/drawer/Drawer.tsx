@@ -53,9 +53,9 @@ export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
                 to={to}
                 selected={location.pathname === to}
                 sx={{
-                  py: 4,
+                  py: 2,
                   minHeight: 70,
-                  px: 4,
+                  px: 2,
                 }}
               >
                 <ListItemIcon sx={{ minWidth: 50 }}>{icon}</ListItemIcon>

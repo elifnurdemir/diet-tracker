@@ -20,7 +20,7 @@ export const DrawerProfile = () => {
             spacing={2}
             direction="row"
             alignItems="center"
-            p={3}
+            p={0.5}
             justifyContent={"center"}
           >
             <Avatar
