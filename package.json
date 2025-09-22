@@ -1,5 +1,6 @@
 {
   "name": "diyet-takibi",
+  "homepage": "https://elifnurdemir.github.io/diet-tracker",
   "private": true,
   "version": "0.0.0",
   "type": "module",
