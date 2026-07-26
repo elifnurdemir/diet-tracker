@@ -16,12 +16,13 @@ describe("toDateKey", () => {
 
 describe("getMonthDays", () => {
   it("returns the correct number of day cells including leading nulls", () => {
-    // July 2026 starts on a Wednesday (index 2 when week starts Monday) and has 31 days
+    // July 2026 starts on a Wednesday (index 3 when the week starts Sunday,
+    // matching weekDaysShort) and has 31 days
     const days = getMonthDays(new Date(2026, 6, 1));
     const leadingNulls = days.filter((d) => d === null).length;
     const dateEntries = days.filter((d) => d !== null);
 
-    expect(leadingNulls).toBe(2);
+    expect(leadingNulls).toBe(3);
     expect(dateEntries).toHaveLength(31);
   });
 
@@ -34,10 +35,20 @@ describe("getMonthDays", () => {
     expect(dateEntries[dateEntries.length - 1]).toBe("2026-02-28");
   });
 
-  it("handles a month that starts on Monday with zero leading nulls", () => {
-    // June 2026 starts on a Monday
+  it("has zero leading nulls when the month starts on Sunday", () => {
+    // February 2026 starts on a Sunday, the first column in weekDaysShort
+    const days = getMonthDays(new Date(2026, 1, 1));
+    expect(days[0]).toBe("2026-02-01");
+  });
+
+  it("places the 1st under its correct weekday column, not always column 0", () => {
+    // Regression test: the offset used to assume a Monday-first week while
+    // weekDaysShort (and the calendar header) starts on Sunday, so every day
+    // rendered one weekday column too early. June 2026 starts on a Monday —
+    // that's column 1 (after a Sunday-column gap), not column 0.
     const days = getMonthDays(new Date(2026, 5, 1));
-    expect(days[0]).not.toBeNull();
+    expect(days[0]).toBeNull();
+    expect(days[1]).toBe("2026-06-01");
   });
 });
 

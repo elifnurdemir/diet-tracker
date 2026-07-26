@@ -165,13 +165,7 @@ export const Home = () => {
             <Typography variant="h6" gutterBottom>
               📈 Kilo Değişimi
             </Typography>
-            {weightEntries.length > 0 ? (
-              <Chart entries={weightEntries.slice(-10)} />
-            ) : (
-              <Typography color="text.secondary">
-                Henüz kilo girişi yok.
-              </Typography>
-            )}
+            <Chart entries={weightEntries.slice(-10)} />
           </CardContent>
         </Card>
 

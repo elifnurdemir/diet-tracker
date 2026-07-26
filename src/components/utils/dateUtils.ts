@@ -29,7 +29,10 @@ export function getMonthDays(currentDate: Date) {
   const lastDay = new Date(year, month + 1, 0);
   const days = [];
 
-  const startOffset = (firstDay.getDay() + 6) % 7;
+  // weekDaysShort Pazar'dan başladığı için getDay() (0=Paz) doğrudan sütun
+  // ofseti olarak kullanılır; önceki +6 %7 dönüşümü haftayı Pazartesi'den
+  // başlatıyordu ve bu da her günü başlık sırasına göre bir sütun kaydırıyordu.
+  const startOffset = firstDay.getDay();
   for (let i = 0; i < startOffset; i++) days.push(null);
   for (let d = 1; d <= lastDay.getDate(); d++) {
     days.push(toDateKey(new Date(year, month, d)));

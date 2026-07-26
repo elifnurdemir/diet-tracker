@@ -110,15 +110,16 @@ export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
   return (
     <Drawer
       variant="permanent"
-      sx={{
-        width: DrawerWidth,
-        flexShrink: 0,
-        "& .MuiDrawer-paper": {
-          width: DrawerWidth,
-          backgroundColor: alpha(theme.palette.background.paper, 0.7),
-          backdropFilter: "blur(14px)",
-          borderRight: `1px solid ${alpha(theme.palette.text.primary, 0.08)}`,
-          boxSizing: "border-box",
+      sx={{ width: DrawerWidth, flexShrink: 0 }}
+      slotProps={{
+        paper: {
+          sx: {
+            width: DrawerWidth,
+            backgroundColor: alpha(theme.palette.background.paper, 0.7),
+            backdropFilter: "blur(14px)",
+            borderRight: `1px solid ${alpha(theme.palette.text.primary, 0.08)}`,
+            boxSizing: "border-box",
+          },
         },
       }}
     >
