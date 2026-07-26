@@ -11,7 +11,7 @@ interface UserContextValue {
   bmi: number | null;
   updateUserData: (newUserData: UserData) => void;
   updateUserImage: (image: string) => void;
-  addWaterEntry: (amount: number) => void;
+  addWaterEntry: (amount: number, date?: Date) => void;
   todayWaterEntries: WaterEntry[]; // Bugünün tüm su içme kayıtları
   todayTotalWaterAmount: number; // Bugünkü toplam su miktarı
   waterHeatmapData: { date: string; value: number }[];
@@ -51,12 +51,12 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, [userData.kg]);
 
   const addWaterEntry = useCallback(
-    (amount: number) => {
+    (amount: number, date?: Date) => {
       setUserData((prev) => {
         const newEntry: WaterEntry = {
           id: String(Date.now()) + Math.random().toString(36).substr(2, 9), // unique id
           amount,
-          date: new Date().toISOString(), // ISO string date with timestamp
+          date: (date ?? new Date()).toISOString(),
         };
         const updatedEntries = [...(prev.waterEntries ?? []), newEntry];
         return { ...prev, waterEntries: updatedEntries };

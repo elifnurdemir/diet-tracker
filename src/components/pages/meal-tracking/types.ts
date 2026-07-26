@@ -8,6 +8,10 @@ export type MealCellData = {
   note?: string;
   image?: string;
   timestamp?: string | number;
+  calories?: number;
+  protein?: number;
+  carbs?: number;
+  fat?: number;
 };
 
 export type Props = {

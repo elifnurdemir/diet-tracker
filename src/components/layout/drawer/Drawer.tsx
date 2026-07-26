@@ -64,19 +64,19 @@ export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
           <DrawerActions />
           <DrawerProfile />
         </Box>
-        <List sx={{ px: 1 }}>
+        <List sx={{ px: 1.5, pt: 1 }}>
           {menuItems.map(({ label, icon, to, page }) => {
             const accent = PAGE_ACCENTS[page][theme.palette.mode];
             const active = location.pathname === to;
 
             return (
-              <ListItem key={label} disablePadding sx={{ mb: 0.5 }}>
+              <ListItem key={label} disablePadding sx={{ mb: 1 }}>
                 <ListItemButton
                   component={Link}
                   to={to}
                   selected={active}
                   sx={{
-                    py: 1.5,
+                    py: 1.75,
                     minHeight: 60,
                     px: 2,
                     borderRadius: 999,

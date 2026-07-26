@@ -1,6 +1,19 @@
-import React, { createContext, useContext, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { ThemeProvider, type Theme } from "@mui/material/styles";
 import { createAppTheme, type PageName, type ThemeMode } from "./theme";
+
+// Akşam 20:00 - sabah 07:00 arası otomatik olarak koyu tema.
+const getAutoMode = (): ThemeMode => {
+  const hour = new Date().getHours();
+  return hour >= 20 || hour < 7 ? "dark" : "light";
+};
 
 type ThemeContextType = {
   currentTheme: Theme;
@@ -22,7 +35,19 @@ export const CustomThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [pageName, setPageName] = useState<PageName>("home");
-  const [mode, setMode] = useState<ThemeMode>("light");
+  const [mode, setMode] = useState<ThemeMode>(getAutoMode);
+  // Kullanıcı tema düğmesine bir kez elle basınca, o oturum boyunca saat
+  // bazlı otomatik geçiş devre dışı kalır — tercihi ezmez.
+  const userOverrodeRef = useRef(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!userOverrodeRef.current) {
+        setMode(getAutoMode());
+      }
+    }, 60_000);
+    return () => clearInterval(interval);
+  }, []);
 
   const theme = useMemo(() => createAppTheme(mode, pageName), [mode, pageName]);
 
@@ -31,7 +56,10 @@ export const CustomThemeProvider: React.FC<{ children: React.ReactNode }> = ({
   // light/dark choice. Only the explicit toggle in DrawerActions passes mode.
   const setTheme = (name: PageName, selectedMode?: ThemeMode) => {
     setPageName(name);
-    if (selectedMode) setMode(selectedMode);
+    if (selectedMode) {
+      userOverrodeRef.current = true;
+      setMode(selectedMode);
+    }
   };
 
   return (

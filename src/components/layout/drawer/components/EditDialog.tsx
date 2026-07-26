@@ -63,8 +63,21 @@ export const EditDialog = ({ open, handleClose }: EditDialogProps) => {
     const age = formData.get("age")?.toString() ?? "";
     const kg = formData.get("kg")?.toString() ?? "";
     const height = formData.get("height")?.toString() ?? "";
+    const calorieGoalRaw = formData.get("dailyCalorieGoal")?.toString() ?? "";
+    const dailyCalorieGoal = calorieGoalRaw
+      ? Number(calorieGoalRaw)
+      : undefined;
 
-    const newUserData = { name, age, kg, height, gender, image };
+    const newUserData = {
+      ...userData,
+      name,
+      age,
+      kg,
+      height,
+      gender,
+      image,
+      dailyCalorieGoal,
+    };
 
     updateUserData(newUserData);
     handleClose();
@@ -228,6 +241,25 @@ export const EditDialog = ({ open, handleClose }: EditDialogProps) => {
               }}
             />
           </Stack>
+          <TextField
+            margin="dense"
+            id="dailyCalorieGoal"
+            name="dailyCalorieGoal"
+            type="number"
+            label="Günlük Kalori Hedefi"
+            fullWidth
+            variant="standard"
+            defaultValue={userData.dailyCalorieGoal ?? ""}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">kcal</InputAdornment>
+              ),
+            }}
+            inputProps={{
+              inputMode: "numeric",
+              pattern: "[0-9]*",
+            }}
+          />
         </Stack>
       </DialogContent>
       <DialogActions>

@@ -17,10 +17,12 @@ interface ActivityHeatmapProps {
   colorScale?: string[];
   titleColor?: string;
   titleSx?: SxProps<Theme>;
+  onCellClick?: (date: string) => void;
 }
 
 const defaultColorScale = ["#bbdefb", "#42a5f5", "#1e88e5"];
 const dayNames = ["Pz", "Pt", "Sa", "Ça", "Pe", "Cu", "Ct"];
+const GRID_GAP = 6;
 
 export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
   data,
@@ -30,6 +32,7 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
   colorScale = defaultColorScale,
   titleColor,
   titleSx,
+  onCellClick,
 }) => {
   const today = new Date();
   const startDate = new Date(today);
@@ -74,19 +77,48 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
                 Egzersizler: {names}
               </Typography>
             )}
+            {onCellClick && (
+              <Typography
+                variant="caption"
+                sx={{ display: "block", mt: 0.5, opacity: 0.8 }}
+              >
+                Eklemek için tıkla
+              </Typography>
+            )}
           </Box>
         }
         arrow
       >
         <Box
+          onClick={onCellClick ? () => onCellClick(iso) : undefined}
+          role={onCellClick ? "button" : undefined}
+          tabIndex={onCellClick ? 0 : undefined}
+          aria-label={onCellClick ? `${iso} için ekle` : undefined}
+          onKeyDown={
+            onCellClick
+              ? (e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onCellClick(iso);
+                  }
+                }
+              : undefined
+          }
+          data-testid="heatmap-cell"
           sx={{
             width: 22,
             height: 22,
             backgroundColor: color,
             borderRadius: 1,
             border: "1px solid #ccc",
-            cursor: "pointer",
-            transition: "background-color 0.3s",
+            cursor: onCellClick ? "pointer" : "default",
+            transition: "background-color 0.3s, transform 0.15s",
+            "&:hover": onCellClick
+              ? { transform: "scale(1.15)", borderColor: colorScale[2] }
+              : undefined,
+            "&:focus-visible": onCellClick
+              ? { outline: `2px solid ${colorScale[2]}`, outlineOffset: 2 }
+              : undefined,
           }}
         />
       </Tooltip>
@@ -108,7 +140,12 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
         {title}
       </Typography>
 
-      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap="1px" mb={1}>
+      <Box
+        display="grid"
+        gridTemplateColumns="repeat(7, 1fr)"
+        gap={`${GRID_GAP}px`}
+        mb={1}
+      >
         {Array.from({ length: 7 }).map((_, i) => {
           const index = (startDayIndex + i) % 7;
           return (
@@ -130,7 +167,11 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
         })}
       </Box>
 
-      <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap={1}>
+      <Box
+        display="grid"
+        gridTemplateColumns="repeat(7, 1fr)"
+        gap={`${GRID_GAP}px`}
+      >
         {cells}
       </Box>
     </Box>

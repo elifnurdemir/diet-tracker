@@ -19,7 +19,14 @@ export const Layout = () => {
         }}
       >
         <BlobBackdrop />
-        <Box sx={{ position: "relative", zIndex: 1 }}>
+        <Box
+          sx={{
+            position: "relative",
+            zIndex: 1,
+            maxWidth: 1240,
+            mx: "auto",
+          }}
+        >
           <Outlet />
         </Box>
       </Box>
