@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { views, type PhotoView, type WeightEntry } from "./types";
 import { ExpandMore, ExpandLess } from "@mui/icons-material";
+import { toDateKey } from "../../utils/dateUtils";
 
 interface Props {
   onSubmit: (entry: WeightEntry) => void;
@@ -17,7 +18,7 @@ interface Props {
 
 const EntryForm: React.FC<Props> = ({ onSubmit, loading }) => {
   const [open, setOpen] = useState(false);
-  const today = new Date().toISOString().split("T")[0];
+  const today = toDateKey(new Date());
   const [date, setDate] = useState(today);
   const [weight, setWeight] = useState<number | "">("");
   const [goal, setGoal] = useState<number | "">("");

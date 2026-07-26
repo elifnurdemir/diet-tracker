@@ -1,37 +1,29 @@
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
-import { getISOWeek, addWeeks } from "date-fns";
+import { addWeeks } from "date-fns";
 import { WeekNavigator } from "./WeekNavigator";
 import { MealTable } from "./MealTable";
 import { InfoDialog } from "./InfoDialog";
-import { STORAGE_KEY, days, meals } from "./constants";
+import { STORAGE_KEY, days, meals, getWeekKey } from "./constants";
 import type { MealCellData, WeekData } from "./types";
 import { useThemeContext } from "../../../ThemeContext";
-
-const getWeekKey = (date: Date) =>
-  `${date.getFullYear()}-${String(getISOWeek(date)).padStart(2, "0")}`;
+import { useLocalStorage } from "../../../hooks/useLocalStorage";
 
 export const MealTracking = () => {
   const { setTheme } = useThemeContext();
 
   useEffect(() => {
-    setTheme("green");
+    setTheme("meal");
   }, []);
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [allData, setAllData] = useState<Record<string, WeekData>>({});
+  const [allData, setAllData] = useLocalStorage<Record<string, WeekData>>(
+    STORAGE_KEY,
+    {}
+  );
   const [infoOpen, setInfoOpen] = useState<string | null>(null);
 
   const weekKey = getWeekKey(currentDate);
   const mealsData: WeekData = allData[weekKey] || {};
-
-  useEffect(() => {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) setAllData(JSON.parse(raw));
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(allData));
-  }, [allData]);
 
   const updateMeal = (key: string, changes: Partial<MealCellData>) => {
     setAllData((prev) => ({

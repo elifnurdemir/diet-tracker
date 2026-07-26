@@ -6,7 +6,9 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  useTheme,
 } from "@mui/material";
+import { alpha } from "@mui/material/styles";
 import { Link, useLocation } from "react-router-dom";
 import { DrawerProfile } from "./components/DrawerProfile";
 import { DrawerActions } from "./components/DrawerActions";
@@ -17,13 +19,29 @@ import {
   RamenDining,
   MonitorWeight,
 } from "@mui/icons-material";
+import { PAGE_ACCENTS, type PageName } from "../../../theme";
 
-const menuItems = [
-  { label: "Anasayfa", icon: <Home />, to: "/" },
-  { label: "Su İçme Takibi", icon: <WaterDrop />, to: "/water" },
-  { label: "Egzersiz Takibi", icon: <FitnessCenter />, to: "/gym" },
-  { label: "Öğün Takibi", icon: <RamenDining />, to: "/meal" },
-  { label: "Kilo Takibi", icon: <MonitorWeight />, to: "/weight" },
+const menuItems: {
+  label: string;
+  icon: React.ReactNode;
+  to: string;
+  page: PageName;
+}[] = [
+  { label: "Anasayfa", icon: <Home />, to: "/", page: "home" },
+  { label: "Su İçme Takibi", icon: <WaterDrop />, to: "/water", page: "water" },
+  {
+    label: "Egzersiz Takibi",
+    icon: <FitnessCenter />,
+    to: "/gym",
+    page: "gym",
+  },
+  { label: "Öğün Takibi", icon: <RamenDining />, to: "/meal", page: "meal" },
+  {
+    label: "Kilo Takibi",
+    icon: <MonitorWeight />,
+    to: "/weight",
+    page: "weight",
+  },
 ];
 
 type AppDrawerProps = {
@@ -32,6 +50,7 @@ type AppDrawerProps = {
 
 export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
   const location = useLocation();
+  const theme = useTheme();
 
   const DrawerList = (
     <Box
@@ -45,32 +64,44 @@ export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
           <DrawerActions />
           <DrawerProfile />
         </Box>
-        <List>
-          {menuItems.map(({ label, icon, to }) => (
-            <ListItem key={label} disablePadding>
-              <ListItemButton
-                component={Link}
-                to={to}
-                selected={location.pathname === to}
-                sx={{
-                  py: 2,
-                  minHeight: 70,
-                  px: 2,
-                }}
-              >
-                <ListItemIcon sx={{ minWidth: 50, color: "primary" }}>
-                  {icon}
-                </ListItemIcon>
-                <ListItemText
-                  primary={label}
-                  primaryTypographyProps={{
-                    fontSize: "1.1rem", // yazı boyutu büyütülür
-                    fontWeight: 800,
+        <List sx={{ px: 1 }}>
+          {menuItems.map(({ label, icon, to, page }) => {
+            const accent = PAGE_ACCENTS[page][theme.palette.mode];
+            const active = location.pathname === to;
+
+            return (
+              <ListItem key={label} disablePadding sx={{ mb: 0.5 }}>
+                <ListItemButton
+                  component={Link}
+                  to={to}
+                  selected={active}
+                  sx={{
+                    py: 1.5,
+                    minHeight: 60,
+                    px: 2,
+                    borderRadius: 999,
+                    "&.Mui-selected": {
+                      backgroundColor: alpha(accent, 0.16),
+                      "&:hover": { backgroundColor: alpha(accent, 0.22) },
+                    },
+                    "&:hover": { backgroundColor: alpha(accent, 0.08) },
                   }}
-                />
-              </ListItemButton>
-            </ListItem>
-          ))}
+                >
+                  <ListItemIcon sx={{ minWidth: 44, color: accent }}>
+                    {icon}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={label}
+                    primaryTypographyProps={{
+                      fontSize: "1rem",
+                      fontWeight: 700,
+                      color: active ? "text.primary" : "text.secondary",
+                    }}
+                  />
+                </ListItemButton>
+              </ListItem>
+            );
+          })}
         </List>
       </Box>
     </Box>
@@ -84,6 +115,9 @@ export const AppDrawer = ({ DrawerWidth }: AppDrawerProps) => {
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: DrawerWidth,
+          backgroundColor: alpha(theme.palette.background.paper, 0.7),
+          backdropFilter: "blur(14px)",
+          borderRight: `1px solid ${alpha(theme.palette.text.primary, 0.08)}`,
           boxSizing: "border-box",
         },
       }}

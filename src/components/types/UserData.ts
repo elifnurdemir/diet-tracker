@@ -10,13 +10,7 @@ export interface ExerciseEntry {
   name: string;
   duration: number; // dakika cinsinden
   category:
-    | "cardio"
-    | "strength"
-    | "yoga"
-    | "pilates"
-    | "dance"
-    | "walking"
-    | "other";
+    "cardio" | "strength" | "yoga" | "pilates" | "dance" | "walking" | "other";
   calories?: number; // yakılan kalori (opsiyonel)
   timestamp: string; // ISO string format
   date: string; // YYYY-MM-DD format

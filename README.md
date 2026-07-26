@@ -1,54 +1,45 @@
-# React + TypeScript + Vite
+# Diyet Takibi
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Kişisel diyet ve sağlık takibi için React + TypeScript ile geliştirilmiş, tamamen tarayıcı tarafında çalışan bir web uygulaması. Sunucu veya veritabanı yok; tüm veriler `localStorage`'da tutulur.
 
-Currently, two official plugins are available:
+Canlı: https://elifnurdemir.github.io/diet-tracker
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Özellikler
 
-## Expanding the ESLint configuration
+- **Yemek takibi** — haftalık öğün tablosu, öğün detayları
+- **Kilo takibi** — kilo girişleri, grafik, motivasyon kartı, fotoğraf galerisi
+- **Su takibi** — günlük hedef, içme kaydı, ısı haritası (heatmap)
+- **Spor takibi** — antrenman girişleri, takvim görünümü, haftalık grafik
+- Açık/koyu tema desteği
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Teknolojiler
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- React 19 + TypeScript
+- Vite 6
+- MUI v7 (`@mui/material`, `@emotion`)
+- `recharts` (grafikler)
+- `react-router-dom` v7
+- `date-fns`
+
+## Kurulum
+
+```bash
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Komutlar
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+| Komut             | Açıklama                                    |
+| ----------------- | ------------------------------------------- |
+| `npm run dev`     | Geliştirme sunucusunu başlatır              |
+| `npm run build`   | Tip kontrolü yapar ve production build alır |
+| `npm run lint`    | ESLint ile kod kontrolü yapar               |
+| `npm run format`  | Prettier ile kodu biçimlendirir             |
+| `npm run test`    | Vitest ile testleri çalıştırır              |
+| `npm run preview` | Production build'i yerelde önizler          |
+| `npm run deploy`  | `dist` klasörünü GitHub Pages'e yayınlar    |
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Veri Saklama
+
+Uygulama herhangi bir backend'e bağlı değildir. Kullanıcı verileri (profil, kilo, su, spor, yemek girdileri) tarayıcının `localStorage`'ında saklanır. Bu nedenle veriler cihaza/tarayıcıya özeldir ve tarayıcı verileri temizlendiğinde kaybolur.

@@ -5,8 +5,6 @@ import { useUser } from "../../../../../../provider/UserProvider.tsx";
 export const WaterHeatmap = () => {
   const { waterHeatmapData, dailyIdealWater } = useUser();
 
-  console.log(waterHeatmapData);
-
   return (
     <Container sx={{ mt: 5 }}>
       <Stack spacing={4}>

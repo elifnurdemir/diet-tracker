@@ -10,33 +10,30 @@ import {
   YAxis,
   Tooltip,
 } from "recharts";
+import { useTheme } from "@mui/material/styles";
 import type { GymEntry } from "../types/GymEntry";
+import { getCurrentWeekDates, weekDaysShort } from "../utils/dateUtils";
+import { PAGE_ACCENTS } from "../../theme";
 
 type Props = {
   entries: GymEntry[];
-  daysShort: string[];
+  daysShort?: string[];
 };
 
-export default function WeeklyChart({ entries, daysShort }: Props) {
-  const getWeekChartData = () => {
-    const start = new Date();
-    start.setDate(start.getDate() - start.getDay());
+export default function WeeklyChart({
+  entries,
+  daysShort = weekDaysShort,
+}: Props) {
+  const theme = useTheme();
+  const accent = PAGE_ACCENTS.gym[theme.palette.mode];
 
-    return Array.from({ length: 7 }, (_, i) => {
-      const date = new Date(start);
-      date.setDate(start.getDate() + i);
-      const dateStr = date.toISOString().slice(0, 10);
-
-      const total = entries
+  const getWeekChartData = () =>
+    getCurrentWeekDates().map((dateStr, i) => ({
+      name: daysShort[i],
+      sure: entries
         .filter((e) => e.date === dateStr)
-        .reduce((acc, e) => acc + e.duration, 0);
-
-      return {
-        name: daysShort[i],
-        sure: total,
-      };
-    });
-  };
+        .reduce((acc, e) => acc + e.duration, 0),
+    }));
 
   return (
     <>
@@ -45,11 +42,11 @@ export default function WeeklyChart({ entries, daysShort }: Props) {
       </Typography>
       <ResponsiveContainer width="100%" height={200}>
         <BarChart data={getWeekChartData()}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
-          <YAxis allowDecimals={false} />
+          <CartesianGrid strokeDasharray="3 3" stroke={theme.palette.divider} />
+          <XAxis dataKey="name" stroke={theme.palette.text.secondary} />
+          <YAxis allowDecimals={false} stroke={theme.palette.text.secondary} />
           <Tooltip />
-          <Bar dataKey="sure" fill="#1976d2" />
+          <Bar dataKey="sure" fill={accent} radius={[6, 6, 2, 2]} />
         </BarChart>
       </ResponsiveContainer>
     </>

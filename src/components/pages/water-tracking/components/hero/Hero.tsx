@@ -8,7 +8,7 @@ export const Hero = () => {
   const { setTheme } = useThemeContext();
 
   useEffect(() => {
-    setTheme("blue");
+    setTheme("water");
   }, []);
 
   return (

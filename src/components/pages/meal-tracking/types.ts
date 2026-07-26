@@ -15,7 +15,7 @@ export type Props = {
   meals: Meal[];
   mealsData: WeekData;
   currentDate: Date;
-  updateMeal: (key: string, changes: Partial<any>) => void;
+  updateMeal: (key: string, changes: Partial<MealCellData>) => void;
   setInfoOpen: (key: string) => void;
 };
 export type MealCellProps = {

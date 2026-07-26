@@ -1,6 +1,7 @@
 import React, { type JSX } from "react";
 import { Box, Tooltip, Typography } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
+import { toDateKey } from "./dateUtils";
 
 interface ActivityData {
   date: string;
@@ -52,7 +53,7 @@ export const ActivityHeatmap: React.FC<ActivityHeatmapProps> = ({
   for (let i = 0; i < 42; i++) {
     const date = new Date(startDate);
     date.setDate(startDate.getDate() + i);
-    const iso = date.toISOString().split("T")[0];
+    const iso = toDateKey(date);
     const entry = dateMap.get(iso);
     const value = entry?.value || 0;
     const percentage = Math.min(1, value / goal);

@@ -1,6 +1,8 @@
 import { Box, Typography, useMediaQuery } from "@mui/material";
+import { alpha, useTheme } from "@mui/material/styles";
 import type { GymEntry } from "../types/GymEntry";
 import exerciseColors from "../constants/exerciseColors";
+import { toDateKey, weekDaysShort } from "../utils/dateUtils";
 
 type Props = {
   days: (string | null)[];
@@ -10,17 +12,22 @@ type Props = {
 
 export default function CalendarGrid({ days, entries, onDayClick }: Props) {
   const isMobile = useMediaQuery("(max-width:600px)");
-  const daysShort = ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"];
+  const theme = useTheme();
 
   // Bugünün tarihini alıyoruz
   const today = new Date();
-  const todayStr = today.toISOString().slice(0, 10); // YYYY-MM-DD
+  const todayStr = toDateKey(today);
 
   return (
     <Box mt={3}>
       <Box display="grid" gridTemplateColumns="repeat(7, 1fr)" gap={1}>
-        {daysShort.map((d) => (
-          <Typography key={d} align="center" fontWeight="bold" color="#254441">
+        {weekDaysShort.map((d) => (
+          <Typography
+            key={d}
+            align="center"
+            fontWeight="bold"
+            color="text.secondary"
+          >
             {d}
           </Typography>
         ))}
@@ -39,19 +46,22 @@ export default function CalendarGrid({ days, entries, onDayClick }: Props) {
               minHeight={isMobile ? 60 : 90}
               sx={{
                 backgroundColor: entry
-                  ? exerciseColors[entry.exercise] || "#eee"
+                  ? exerciseColors[entry.exercise]
                   : dateStr
-                  ? "#1111"
-                  : "transparent",
-                border: isToday ? "5px solid #5b6349ff" : "none", // Bugün vurgusu
-                borderRadius: 1,
+                    ? alpha(theme.palette.primary.main, 0.08)
+                    : "transparent",
+                border: isToday
+                  ? `3px solid ${theme.palette.primary.main}`
+                  : "none",
+                borderRadius: 2.5,
                 opacity: dateStr ? 1 : 0.2,
                 cursor: dateStr ? "pointer" : "default",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontSize: 20,
-                color: "#000",
+                fontSize: 18,
+                fontWeight: 700,
+                color: entry ? "#ffffff" : "text.primary",
               }}
             >
               {dateStr ? +dateStr.slice(-2) : ""}

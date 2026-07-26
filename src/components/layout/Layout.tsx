@@ -1,6 +1,7 @@
 import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import { AppDrawer } from "./drawer/Drawer";
+import { BlobBackdrop } from "./BlobBackdrop";
 
 export const Layout = () => {
   const DrawerWidth = 280;
@@ -13,9 +14,14 @@ export const Layout = () => {
         sx={{
           ml: `${DrawerWidth}px`,
           minHeight: "100vh",
+          position: "relative",
+          overflow: "hidden",
         }}
       >
-        <Outlet />
+        <BlobBackdrop />
+        <Box sx={{ position: "relative", zIndex: 1 }}>
+          <Outlet />
+        </Box>
       </Box>
     </Box>
   );

@@ -8,14 +8,15 @@ import type exerciseColors from "../../constants/exerciseColors";
 import type { GymEntry } from "../../types/GymEntry";
 import { getMonthDays } from "../../utils/dateUtils";
 import { useThemeContext } from "../../../ThemeContext";
+import { useLocalStorage } from "../../../hooks/useLocalStorage";
 
 export default function GymCalendar() {
   const { setTheme } = useThemeContext();
 
   useEffect(() => {
-    return setTheme("white");
+    return setTheme("gym");
   }, []);
-  const [entries, setEntries] = useState<GymEntry[]>([]);
+  const [entries, setEntries] = useLocalStorage<GymEntry[]>("gym-entries", []);
   const [currentDate, setCurrentDate] = useState(new Date());
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -25,16 +26,6 @@ export default function GymCalendar() {
   >("");
 
   const days = getMonthDays(currentDate);
-  const daysShort = ["Paz", "Pzt", "Sal", "Çar", "Per", "Cum", "Cmt"];
-
-  useEffect(() => {
-    const saved = localStorage.getItem("gym-entries");
-    if (saved) setEntries(JSON.parse(saved));
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("gym-entries", JSON.stringify(entries));
-  }, [entries]);
 
   const handleDayClick = (dateStr: string) => {
     setSelectedDate(dateStr);
@@ -63,7 +54,7 @@ export default function GymCalendar() {
 
   return (
     <Box p={2}>
-      <Typography variant="h4" align="center" gutterBottom color="#333">
+      <Typography variant="h4" align="center" gutterBottom color="text.primary">
         Egzersiz Takvimi
       </Typography>
 
@@ -77,7 +68,7 @@ export default function GymCalendar() {
         >
           <ArrowBack />
         </IconButton>
-        <Typography variant="h6" color="#222">
+        <Typography variant="h6" color="text.primary">
           {currentDate.toLocaleDateString("tr-TR", {
             year: "numeric",
             month: "long",
@@ -96,7 +87,7 @@ export default function GymCalendar() {
 
       <CalendarGrid days={days} entries={entries} onDayClick={handleDayClick} />
 
-      <WeeklyChart entries={entries} daysShort={daysShort} />
+      <WeeklyChart entries={entries} />
 
       <AddExerciseDialog
         open={dialogOpen}

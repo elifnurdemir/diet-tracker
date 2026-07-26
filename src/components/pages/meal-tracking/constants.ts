@@ -1,4 +1,9 @@
+import { getISOWeek } from "date-fns";
+
 export const STORAGE_KEY = "meal-tracker-data";
+
+export const getWeekKey = (date: Date) =>
+  `${date.getFullYear()}-${String(getISOWeek(date)).padStart(2, "0")}`;
 
 export const days = ["Pzt", "Salı", "Çrş", "Per", "Cuma", "Cmt", "Paz"];
 

@@ -6,27 +6,25 @@ import Chart from "./Chart";
 import MotivationCard from "./MotivationCard";
 import PhotoGallery from "./PhotoGallery";
 import { useThemeContext } from "../../../ThemeContext";
+import { useLocalStorage } from "../../../hooks/useLocalStorage";
 
 const WeightTracker = () => {
   const { setTheme } = useThemeContext();
 
   useEffect(() => {
-    setTheme("orange");
+    setTheme("weight");
   }, []);
-  const [entries, setEntries] = useState<WeightEntry[]>([]);
+  const [entries, setEntries] = useLocalStorage<WeightEntry[]>(
+    "weightData",
+    []
+  );
   const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const data = localStorage.getItem("weightData");
-    if (data) setEntries(JSON.parse(data));
-  }, []);
 
   const handleSubmit = (entry: WeightEntry) => {
     setLoading(true);
     const updated = [...entries, entry].sort((a, b) =>
       a.date.localeCompare(b.date)
     );
-    localStorage.setItem("weightData", JSON.stringify(updated));
     setEntries(updated);
     setLoading(false);
   };
