@@ -10,7 +10,7 @@ export const WaterHeatmap = () => {
       <Stack spacing={4}>
         <ActivityHeatmap
           data={waterHeatmapData}
-          goal={dailyIdealWater || 2000}
+          goal={dailyIdealWater}
           title="Su Takibi"
           titleColor="primary.main"
           unit="ml"

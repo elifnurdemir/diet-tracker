@@ -7,10 +7,8 @@ export const DailyGoal = () => {
   const { dailyIdealWater, todayTotalWaterAmount } = useUser();
   const theme = useTheme();
 
-  const percentage = dailyIdealWater
-    ? (todayTotalWaterAmount / dailyIdealWater) * 100
-    : 0;
-  const marks = dailyIdealWater ? generateMarks(dailyIdealWater) : [];
+  const percentage = (todayTotalWaterAmount / dailyIdealWater) * 100;
+  const marks = generateMarks(dailyIdealWater);
   const bgColor = theme.palette.background.paper;
 
   return (
@@ -35,7 +33,7 @@ export const DailyGoal = () => {
 
       {/* Water Tank */}
       <WaterTank
-        dailyIdealWater={dailyIdealWater ?? 0}
+        dailyIdealWater={dailyIdealWater}
         todayTotalWaterAmount={todayTotalWaterAmount}
         percentage={percentage}
         marks={marks}
@@ -63,7 +61,7 @@ export const DailyGoal = () => {
               mb: 1,
             }}
           >
-            {Math.max(0, (dailyIdealWater ?? 0) - todayTotalWaterAmount)}ml
+            {Math.max(0, dailyIdealWater - todayTotalWaterAmount)}ml
           </Typography>
           <Typography variant="caption" color="text.primary">
             {percentage >= 100 ? "Hedef tamamlandı! 🎉" : "hedefe ulaşmak için"}

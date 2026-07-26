@@ -3,9 +3,11 @@ import type { UserData, WaterEntry } from "../components/types/UserData";
 import { toDateKey } from "../components/utils/dateUtils";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
+const DEFAULT_DAILY_WATER_GOAL_ML = 2000;
+
 interface UserContextValue {
   userData: UserData;
-  dailyIdealWater: number | null;
+  dailyIdealWater: number;
   bmi: number | null;
   updateUserData: (newUserData: UserData) => void;
   updateUserImage: (image: string) => void;
@@ -42,7 +44,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         return Math.round(kg * 0.033 * 1000); // ml cinsinden, tam sayı
       }
     }
-    return null;
+    // Kilo profile girilmemişse su hedefi hesaplanamaz; makul bir
+    // varsayılan olmadan gösterge (tank, kalan miktar, yüzde) hep sıfır
+    // görünürdü, sanki eklenen su hiçbir şeyi etkilemiyormuş gibi.
+    return DEFAULT_DAILY_WATER_GOAL_ML;
   }, [userData.kg]);
 
   const addWaterEntry = useCallback(

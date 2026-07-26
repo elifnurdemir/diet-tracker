@@ -200,7 +200,7 @@ export const Home = () => {
         <CardContent>
           <ActivityHeatmap
             data={waterHeatmapData}
-            goal={dailyIdealWater || 2000}
+            goal={dailyIdealWater}
             title="Su Takibi Geçmişi"
             unit="ml"
           />
